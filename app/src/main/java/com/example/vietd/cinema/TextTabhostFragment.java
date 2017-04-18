@@ -25,7 +25,6 @@ public class TextTabhostFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame_text_tabhost, showingMovieFragment).addToBackStack(null).commit();
 
-
         return myView;
     }
 

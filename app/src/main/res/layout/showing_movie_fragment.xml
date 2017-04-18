@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
 
@@ -16,5 +17,36 @@
             android:layout_gravity="center" />
 
     </me.crosswall.lib.coverflow.core.PagerContainer>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ebebec"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_movie_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/pager_container"
+            android:text="Nhóc trùm - 17/04/2016 - 125 phút"
+            android:textColor="@color/colorPrimary"
+            android:paddingLeft="10dp"
+            android:textStyle="bold|italic"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:id="@+id/img_btn_view_all"
+            android:layout_width="113dp"
+            android:layout_height="29dp"
+            android:background="@drawable/round"
+            android:text="booking now"
+            android:textSize="10sp"
+            android:textColor="#ffe203"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </LinearLayout>

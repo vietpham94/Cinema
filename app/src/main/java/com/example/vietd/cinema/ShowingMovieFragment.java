@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,9 +36,9 @@ public class ShowingMovieFragment extends Fragment {
                 .with(viewPager)
                 .scale(0.3f)
                 .pagerMargin(getResources().getDimensionPixelSize(R.dimen.pager_margin))
-                .spaceSize(0f)
+                .spaceSize(10f)
                 .build();
-        viewPager.setPageMargin(30);
+        viewPager.setPageMargin(40);
 
         return myView;
     }

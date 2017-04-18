@@ -1,5 +1,6 @@
 package com.example.vietd.cinema;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,8 +12,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -42,6 +45,19 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.conent_frame, new TextTabhostFragment())
                 .addToBackStack(null)
                 .commit();
+
+        lv_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView tv_item = (TextView)view.findViewById(R.id.tv_item_menu);
+                String item_menu = tv_item.getText().toString();
+
+                if(item_menu.equals("List movies")){
+                    Intent i = new Intent(MainActivity.this, MovieAllActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
     }
 
     public void createDraw(){
