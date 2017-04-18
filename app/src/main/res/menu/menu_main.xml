@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.vietd.cinema.MainActivity">
+    <item
+        android:id="@+id/action_menu_bar"
+        android:icon="@drawable/ic_menu_black_24dp"
+        android:orderInCategory="102"
+        android:title="Thông tin"
+        app:showAsAction="always" />
+</menu>
