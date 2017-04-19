@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +32,10 @@ public class MovieAllActivity extends AppCompatActivity {
     private ListView listview;
     private MovieAdapter adapter;
     private ArrayList<MovieInfo> arrayList;
-    private Socket mSocket;
+
+    Config mConfig = new Config();
+    Socket mSocket = mConfig.mSocket;
+
     private JSONArray jsonarray;
     private Emitter.Listener getData = new Emitter.Listener() {
         @Override
@@ -51,8 +53,10 @@ public class MovieAllActivity extends AppCompatActivity {
                                     jsonarray.getJSONObject(i).getString("startday"),
                                     jsonarray.getJSONObject(i).getDouble("imdb"),
                                     jsonarray.getJSONObject(i).getInt("duration"),
+                                    "http://192.168.0.33:3000" + jsonarray.getJSONObject(i).getString("image"),
                                     jsonarray.getJSONObject(i).getInt("ages"),
-                                    jsonarray.getJSONObject(i).getInt("format")
+                                    jsonarray.getJSONObject(i).getInt("format"),
+                                    jsonarray.getJSONObject(i).getInt("status")
                             );
                             arrayList.add(movies);
                         }
@@ -65,12 +69,7 @@ public class MovieAllActivity extends AppCompatActivity {
         }
     };
 
-    {
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +78,7 @@ public class MovieAllActivity extends AppCompatActivity {
 
         listview = (ListView) findViewById(R.id.movie_list_view);
         mSocket.connect();
+        mSocket.emit("laydulieu");
         mSocket.on("data", getData);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
@@ -104,6 +104,7 @@ public class MovieAllActivity extends AppCompatActivity {
                     i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position).getDouble("imdb")));
                     i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
                     i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
+                    i.putExtra("poster", "http://192.168.0.33:3000" + jsonarray.getJSONObject(position).getString("image"));
 
                 } catch (JSONException e) {
                     e.printStackTrace();

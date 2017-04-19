@@ -1,22 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardview"
         android:layout_width="275dp"
-        android:layout_height="375dp"
+        android:layout_height="420dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
-        <ImageView
-            android:id="@+id/image_cover"
-            android:layout_gravity="center"
-            android:layout_width="236dp"
-            android:layout_height="350dp"
-            android:scaleType="centerCrop"
-            android:visibility="visible"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_cover"
+                android:layout_width="236dp"
+                android:layout_height="350dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+                    <TextView
+                        android:id="@+id/tv_movie_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pager_container"
+                        android:textSize="10sp"
+                        android:paddingLeft="10dp"
+                        android:text="Nhóc trùm"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_movie_release_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pager_container"
+                        android:textSize="8sp"
+                        android:paddingLeft="10dp"
+                        android:text="17/04/2016"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold|italic" />
+                    <TextView
+                        android:id="@+id/tv_movie_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pager_container"
+                        android:textSize="8sp"
+                        android:paddingLeft="10dp"
+                        android:text="125 phút"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold|italic" />
+                </LinearLayout>
+
+                <Button
+                    android:layout_gravity="center"
+                    android:id="@+id/img_btn_view_all"
+                    android:layout_width="66dp"
+                    android:layout_height="29dp"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:background="@drawable/round"
+                    android:text="Đặt vé"
+                    android:textColor="#ffe203"
+                    android:textSize="8sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+
     </android.support.v7.widget.CardView>
 </RelativeLayout>

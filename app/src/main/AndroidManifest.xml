@@ -6,17 +6,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
+        android:name=".EnableMultiDex"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:name="com.example.vietd.cinema.EnableMultiDex"
         android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:largeHeap="true"
         tools:node="replace">
         <activity
             android:name=".MainActivity"
@@ -28,8 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MovieAllActivity"></activity>
-        <activity android:name=".MovieDetail"></activity>
+        <activity android:name=".MovieAllActivity" />
+        <activity android:name=".MovieDetail" />
     </application>
 
 </manifest>

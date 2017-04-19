@@ -1,6 +1,8 @@
 package com.example.vietd.cinema;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
@@ -28,8 +29,8 @@ import me.crosswall.lib.coverflow.core.PagerContainer;
 
 import static com.google.android.gms.internal.zzir.runOnUiThread;
 
-public class ShowingMovieFragment extends Fragment {
 
+public class ComingMovieFragment extends Fragment {
     public String[] covers;
     View myView;
     private JSONArray jsonarray;
@@ -91,10 +92,10 @@ public class ShowingMovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mSocket.connect();
-        mSocket.emit("getShowingMovie");
-        mSocket.on("listShowingMovie", getData);
+        mSocket.emit("getComingMovie");
+        mSocket.on("listComingMovie", getData);
 
-        myView=inflater.inflate(R.layout.showing_movie_fragment,container,false);
+        myView=inflater.inflate(R.layout.fragment_coming_movie,container,false);
 
         return myView;
     }
@@ -176,5 +177,4 @@ public class ShowingMovieFragment extends Fragment {
             return view == object;
         }
     }
-
 }

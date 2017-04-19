@@ -19,7 +19,7 @@
             android:padding="10dp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:text="Showing" />
+            android:text="Đang chiếu" />
 
         <TextView
             android:id="@+id/tv_feature_movie"
@@ -31,7 +31,7 @@
             android:padding="10dp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:text="Feature" />
+            android:text="Nổi bật" />
 
         <TextView
             android:id="@+id/tv_coming_movie"
@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Coming"
+            android:text="Sắp chiếu"
             android:textStyle="bold"
             android:textColor="#FFFFFF"/>
     </LinearLayout>

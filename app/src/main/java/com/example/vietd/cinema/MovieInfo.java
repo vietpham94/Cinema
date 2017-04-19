@@ -12,8 +12,9 @@ public class MovieInfo {
     String posterurl;
     int age;
     int format;
+    int status;
 
-    public MovieInfo(String name, String release, double imdb, int duration, String posterurl, int age, int format) {
+    public MovieInfo(String name, String release, double imdb, int duration, String posterurl, int age, int format, int status) {
         this.name = name;
         this.release = release;
         this.imdb = imdb;
@@ -21,6 +22,16 @@ public class MovieInfo {
         this.posterurl = posterurl;
         this.age = age;
         this.format = format;
+        this.status = status;
+
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getName() {
