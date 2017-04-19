@@ -19,7 +19,7 @@ import me.crosswall.lib.coverflow.core.PagerContainer;
 public class ShowingMovieFragment extends Fragment {
 
 
-    public static String[] covers = {"http://192.168.0.32:3000/public/images/nhoc.jpg", "http://192.168.0.32:3000/public/images/f8.jpg", "http://192.168.0.32:3000/public/images/pr2017.png"};
+    public static String[] covers = {"http://192.168.0.33:3000/public/images/nhoc.jpg", "http://192.168.0.33:3000/public/images/f8.jpg", "http://192.168.0.33:3000/public/images/pr2017.png"};
     View myView;
 
     @Nullable
@@ -30,7 +30,7 @@ public class ShowingMovieFragment extends Fragment {
         PagerContainer pagerContainer = (PagerContainer) myView.findViewById(R.id.pager_container);
         ViewPager viewPager = pagerContainer.getViewPager();
         viewPager.setAdapter(new MyPagerAdapter());
-        viewPager.setClipChildren(false);
+       // viewPager.setClipChildren(false);
 
         new CoverFlow.Builder()
                 .with(viewPager)

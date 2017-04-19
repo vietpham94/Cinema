@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -32,10 +33,14 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     compile('com.github.nkzawa:socket.io-client:0.4.1') {
+
         exclude group: 'org.json', module: 'json'
     }
     compile 'com.android.support:support-v4:25.+'
     compile 'com.google.android.gms:play-services:8.4.0'
+
+    compile 'com.android.support:multidex:1.0.0'
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.github.crosswall:Android-Coverflow:release-v1.0.4'
