@@ -4,4 +4,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="duration"><![CDATA[<b>Thời lượng: </b>]]></string>
+    <string name="director"><![CDATA[<b>Đạo diễn: </b>]]></string>
+    <string name="actor"><![CDATA[<b>Diễn viên: </b>]]></string>
+    <string name="nation"><![CDATA[<b>Quốc gia: </b>]]></string>
+    <string name="language"><![CDATA[<b>Ngôn ngữ: </b>]]></string>
+    <string name="genre"><![CDATA[<b>Thể loại: </b>]]></string>
+    <string name="release"><![CDATA[<b>Ngày khởi chiếu: </b>]]></string>
+    <string name="imdb"><![CDATA[<b>IMDb: </b>]]></string>
+    <string name="format"><![CDATA[<b>Định dạng: </b>]]></string>
 </resources>
