@@ -36,7 +36,6 @@ public class ShowingMovieFragment extends Fragment {
     private ArrayList<MovieInfo> arrayList;
     private PagerContainer pagerContainer;
     private ViewPager viewPager;
-    private int position1;
 
     Config mConfig = new Config();
     Socket mSocket = mConfig.mSocket;
@@ -56,7 +55,7 @@ public class ShowingMovieFragment extends Fragment {
                                     jsonarray.getJSONObject(i).getString("startday"),
                                     jsonarray.getJSONObject(i).getDouble("imdb"),
                                     jsonarray.getJSONObject(i).getInt("duration"),
-                                    "http://192.168.0.33:3000" + jsonarray.getJSONObject(i).getString("image"),
+                                    "http://192.168.0.28:3000" + jsonarray.getJSONObject(i).getString("image"),
                                     jsonarray.getJSONObject(i).getInt("ages"),
                                     jsonarray.getJSONObject(i).getInt("format"),
                                     jsonarray.getJSONObject(i).getInt("status")
@@ -103,7 +102,7 @@ public class ShowingMovieFragment extends Fragment {
 
     private class MyPagerAdapter extends PagerAdapter {
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_cover, null);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image_cover);
@@ -131,26 +130,24 @@ public class ShowingMovieFragment extends Fragment {
 
             container.addView(view);
 
-            position1 = position;
-
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(getActivity().getApplicationContext(),MovieDetail.class);
                     try {
-                        i.putExtra("name", jsonarray.getJSONObject(position1).getString("name"));
-                        i.putExtra("duration", String.valueOf(jsonarray.getJSONObject(position1).getInt("duration")));
-                        i.putExtra("director", jsonarray.getJSONObject(position1).getString("director"));
-                        i.putExtra("actornactress", jsonarray.getJSONObject(position1).getString("actornactress"));
-                        i.putExtra("nation", jsonarray.getJSONObject(position1).getString("nation"));
-                        i.putExtra("language", jsonarray.getJSONObject(position1).getString("language"));
-                        i.putExtra("category", jsonarray.getJSONObject(position1).getString("category"));
-                        i.putExtra("startday", jsonarray.getJSONObject(position1).getString("startday"));
-                        i.putExtra("format", jsonarray.getJSONObject(position1).getString("format"));
-                        i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position1).getDouble("imdb")));
-                        i.putExtra("urltrailer", jsonarray.getJSONObject(position1).getString("urltrailer"));
-                        i.putExtra("content", jsonarray.getJSONObject(position1).getString("content"));
-                        i.putExtra("poster", "http://192.168.0.33:3000" + jsonarray.getJSONObject(position1).getString("image"));
+                        i.putExtra("name", jsonarray.getJSONObject(position).getString("name"));
+                        i.putExtra("duration", String.valueOf(jsonarray.getJSONObject(position).getInt("duration")));
+                        i.putExtra("director", jsonarray.getJSONObject(position).getString("director"));
+                        i.putExtra("actornactress", jsonarray.getJSONObject(position).getString("actornactress"));
+                        i.putExtra("nation", jsonarray.getJSONObject(position).getString("nation"));
+                        i.putExtra("language", jsonarray.getJSONObject(position).getString("language"));
+                        i.putExtra("category", jsonarray.getJSONObject(position).getString("category"));
+                        i.putExtra("startday", jsonarray.getJSONObject(position).getString("startday"));
+                        i.putExtra("format", jsonarray.getJSONObject(position).getString("format"));
+                        i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position).getDouble("imdb")));
+                        i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
+                        i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
+                        i.putExtra("poster", "http://192.168.0.28:3000" + jsonarray.getJSONObject(position).getString("image"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

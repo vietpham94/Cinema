@@ -3,20 +3,38 @@ package com.example.vietd.cinema;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ScheduleMovieActivity extends AppCompatActivity {
+
     private DrawerLayout mDrawerLayout;
     private LinearLayout navigation_draw;
     private ListView lv_menu;
     private item_menu_adpter menu_adpter;
     private ArrayList<item_menu_info> arrayMenu;
+    private TextView day1, day2, day3;
+
+    private RecyclerView recyclerView, recyclerView1, recyclerView2;
+    private List<ScheduleInfo> scheduleInfos = new ArrayList<>();
+    private List<ScheduleInfo1> scheduleInfos1 = new ArrayList<>();
+    private List<ScheduleInfo2> scheduleInfos2 = new ArrayList<>();
+    private ScheduleAdapter scheduleAdapter;
+    private ScheduleAdapter1 scheduleAdapter1;
+    private ScheduleAdapter2 scheduleAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +45,174 @@ public class ScheduleMovieActivity extends AppCompatActivity {
         lv_menu = (ListView) findViewById(R.id.lv_menu);
         createDraw();
 
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_schedule);
+        recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view_schedule1);
+        recyclerView2 = (RecyclerView) findViewById(R.id.recycler_view_schedule2);
+
+        day1 = (TextView) findViewById(R.id.txt_schedule_day);
+        day2 = (TextView) findViewById(R.id.txt_schedule_day1);
+        day3 = (TextView) findViewById(R.id.txt_schedule_day2);
+
+        scheduleAdapter = new ScheduleAdapter(scheduleInfos);
+        scheduleAdapter1 = new ScheduleAdapter1(scheduleInfos1);
+        scheduleAdapter2 = new ScheduleAdapter2(scheduleInfos2);
+
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate = mdformat.format(calendar.getTime());
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.DAY_OF_YEAR, 1);
+        String strTomorrow = mdformat.format(calendar1.getTime());
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.add(Calendar.DAY_OF_YEAR, 2);
+        String strTomorrow2 = mdformat.format(calendar2.getTime());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        Date d = new Date();
+        String dayOfTheWeek = sdf.format(d);
+        Date d1 = new Date();
+        d1.setDate(d.getDate() + 1);
+        String dayOfTheWeek1 = sdf.format(d1);
+        Date d2 = new Date();
+        d2.setDate(d1.getDate() + 1);
+        String dayOfTheWeek2 = sdf.format(d2);
+
+        day1.setText(strDate + " - " + dayOfTheWeek(dayOfTheWeek));
+        day2.setText(strTomorrow + " - " + dayOfTheWeek(dayOfTheWeek1));
+        day3.setText(strTomorrow2 + " - " + dayOfTheWeek(dayOfTheWeek2));
+
+        int numberOfColumns = 5;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+
+        /*RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(mLayoutManager);*/
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(scheduleAdapter);
+
+      /*RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);*/
+        recyclerView1.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        recyclerView1.setItemAnimator(new DefaultItemAnimator());
+        recyclerView1.setAdapter(scheduleAdapter1);
+
+        /*RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);*/
+        recyclerView2.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        recyclerView2.setItemAnimator(new DefaultItemAnimator());
+        recyclerView2.setAdapter(scheduleAdapter2);
+
+        quaylen();
+
+    }
+
+    private String dayOfTheWeek(String dayOfTheWeek) {
+        switch (dayOfTheWeek) {
+            case "Monday":
+                dayOfTheWeek = "Thứ 2";
+                break;
+            case "Tuesday":
+                dayOfTheWeek = "Thứ 3";
+                break;
+            case "Wednesday":
+                dayOfTheWeek = "Thứ 4";
+                break;
+            case "Thursday":
+                dayOfTheWeek = "Thứ 5";
+                break;
+            case "Friday":
+                dayOfTheWeek = "Thứ 6";
+                break;
+            case "Saturday":
+                dayOfTheWeek = "Thứ 7";
+                break;
+            default:
+                dayOfTheWeek = "Chủ nhật";
+                break;
+        }
+        return dayOfTheWeek;
+    }
+
+    private void quaylen() {
+        String[] a = {"11661", "22662", "22366", "36533"};
+
+        ScheduleInfo item = new ScheduleInfo(a[2]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[3]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[0]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[1]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[1]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[1]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[1]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[1]);
+        scheduleInfos.add(item);
+        item = new ScheduleInfo(a[1]);
+        scheduleInfos.add(item);
+
+
+        ScheduleInfo1 item1 = new ScheduleInfo1(a[0]);
+        scheduleInfos1.add(item1);
+        item1 = new ScheduleInfo1(a[1]);
+        scheduleInfos1.add(item1);
+        item1 = new ScheduleInfo1(a[1]);
+        scheduleInfos1.add(item1);
+        item1 = new ScheduleInfo1(a[1]);
+        scheduleInfos1.add(item1);
+        item1 = new ScheduleInfo1(a[1]);
+        scheduleInfos1.add(item1);
+
+        ScheduleInfo2 item2 = new ScheduleInfo2(a[0]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+        item2 = new ScheduleInfo2(a[1]);
+        scheduleInfos2.add(item2);
+
+
+        scheduleAdapter.notifyDataSetChanged();
+        scheduleAdapter1.notifyDataSetChanged();
+        scheduleAdapter2.notifyDataSetChanged();
     }
 
     public void createDraw() {
@@ -65,4 +251,6 @@ public class ScheduleMovieActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

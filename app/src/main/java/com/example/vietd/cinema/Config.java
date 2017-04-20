@@ -12,7 +12,7 @@ public class Config {
     public Socket mSocket;
     {
         try {
-            mSocket = IO.socket("http://192.168.0.33:3000");
+            mSocket = IO.socket("http://192.168.0.28:3000");
         } catch (Exception e) {
             e.printStackTrace();
         }
