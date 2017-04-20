@@ -79,9 +79,9 @@ public class ScheduleMovieActivity extends AppCompatActivity {
         d2.setDate(d1.getDate() + 1);
         String dayOfTheWeek2 = sdf.format(d2);
 
-        day1.setText(strDate + " - " + dayOfTheWeek(dayOfTheWeek));
-        day2.setText(strTomorrow + " - " + dayOfTheWeek(dayOfTheWeek1));
-        day3.setText(strTomorrow2 + " - " + dayOfTheWeek(dayOfTheWeek2));
+        day1.setText(strDate + " - " + dayOfTheWeek);
+        day2.setText(strTomorrow + " - " + dayOfTheWeek1);
+        day3.setText(strTomorrow2 + " - " + dayOfTheWeek2);
 
         int numberOfColumns = 5;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
@@ -105,7 +105,7 @@ public class ScheduleMovieActivity extends AppCompatActivity {
 
     }
 
-    private String dayOfTheWeek(String dayOfTheWeek) {
+/*    private String dayOfTheWeek(String dayOfTheWeek) {
         switch (dayOfTheWeek) {
             case "Monday":
                 dayOfTheWeek = "Thứ 2";
@@ -130,7 +130,7 @@ public class ScheduleMovieActivity extends AppCompatActivity {
                 break;
         }
         return dayOfTheWeek;
-    }
+    }*/
 
     private void quaylen() {
         String[] a = {"11661", "22662", "22366", "36533"};

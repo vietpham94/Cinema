@@ -34,49 +34,6 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
     public String API_KEY = "AIzaSyBZj3624Oh1C0-sib0dqQn0xPGqdEA5LCk";
     public String VIDEO_ID = "rJdTUnrrISk";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private TextView name, duration, director, actor, country, language, genres, date, imdb, format, content;
     private ImageView poster;
     private YouTubePlayerView trailer;

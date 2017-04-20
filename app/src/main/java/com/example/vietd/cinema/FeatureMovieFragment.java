@@ -55,7 +55,7 @@ public class FeatureMovieFragment extends Fragment {
                                     jsonarray.getJSONObject(i).getString("startday"),
                                     jsonarray.getJSONObject(i).getDouble("imdb"),
                                     jsonarray.getJSONObject(i).getInt("duration"),
-                                    "http://192.168.0.28:3000" + jsonarray.getJSONObject(i).getString("image"),
+                                    "http://192.168.0.28:3000/" + jsonarray.getJSONObject(i).getString("image"),
                                     jsonarray.getJSONObject(i).getInt("ages"),
                                     jsonarray.getJSONObject(i).getInt("format"),
                                     jsonarray.getJSONObject(i).getInt("status")
@@ -135,6 +135,7 @@ public class FeatureMovieFragment extends Fragment {
                 public void onClick(View v) {
                     Intent i = new Intent(getActivity().getApplicationContext(),MovieDetail.class);
                     try {
+
                         i.putExtra("name", jsonarray.getJSONObject(position).getString("name"));
                         i.putExtra("duration", String.valueOf(jsonarray.getJSONObject(position).getInt("duration")));
                         i.putExtra("director", jsonarray.getJSONObject(position).getString("director"));
@@ -147,7 +148,7 @@ public class FeatureMovieFragment extends Fragment {
                         i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position).getDouble("imdb")));
                         i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
                         i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
-                        i.putExtra("poster", "http://192.168.0.28:3000" + jsonarray.getJSONObject(position).getString("image"));
+                        i.putExtra("poster", "http://192.168.0.28:3000/" + jsonarray.getJSONObject(position).getString("image"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
