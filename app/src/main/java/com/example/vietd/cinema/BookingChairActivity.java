@@ -103,7 +103,10 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
         s6.setOnClickListener(this);
         s7.setOnClickListener(this);
         s8.setOnClickListener(this);
-        Intent intent = getIntent();
+
+//        Intent intent = getIntent();
+        MovieInfoForBooking data = (MovieInfoForBooking) getIntent().getExtras().getSerializable("DATA");
+        Toast.makeText(this, data.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.github.nkzawa.socketio.client.Socket;
 
 public class Config {
 
+    public String link = "http://192.168.0.28:3000/";
     public Socket mSocket;
     {
         try {

@@ -4,16 +4,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +17,6 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 //import static android.provider.MediaStore.Video.Thumbnails.VIDEO_ID;
 //YouTubeBaseActivity
@@ -39,12 +31,11 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
     private YouTubePlayerView trailer;
     private Button btn_Booking;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
         name = (TextView) findViewById(R.id.txt_movie_detail_name);
         duration = (TextView) findViewById(R.id.txt_movie_detail_duration);
@@ -61,7 +52,7 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
         content = (TextView) findViewById(R.id.txt_movie_detail_content);
         btn_Booking = (Button) findViewById(R.id.btn_movie_detail_booking);
 
-        Intent i = getIntent();
+        final Intent i = getIntent();
         Resources res = getResources();
 
         name.setText(i.getStringExtra("name"));
@@ -96,6 +87,20 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MovieDetail.this, ScheduleMovieActivity.class);
+                intent.putExtra("idmovie", i.getStringExtra("idmovie"));
+                intent.putExtra("name", i.getStringExtra("name"));
+                i.putExtra("duration", i.getStringExtra("duration"));
+                i.putExtra("director", i.getStringExtra("director"));
+                i.putExtra("actornactress", i.getStringExtra("actornactress"));
+                i.putExtra("nation", i.getStringExtra("nation"));
+                i.putExtra("language", i.getStringExtra("language"));
+                i.putExtra("category", i.getStringExtra("category"));
+                i.putExtra("startday", i.getStringExtra("startday"));
+                i.putExtra("format", i.getStringExtra("format"));
+                i.putExtra("imdb", i.getStringExtra("imdb"));
+                i.putExtra("urltrailer", i.getStringExtra("urltrailer"));
+                i.putExtra("content", i.getStringExtra("content"));
+                i.putExtra("poster", i.getStringExtra("poster"));
                 startActivity(intent);
             }
         });

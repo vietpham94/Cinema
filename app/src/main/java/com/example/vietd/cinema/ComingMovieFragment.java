@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +41,8 @@ public class ComingMovieFragment extends Fragment {
 
     Config mConfig = new Config();
     Socket mSocket = mConfig.mSocket;
+    String link = mConfig.link;
+
     private Emitter.Listener getData = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -56,7 +59,7 @@ public class ComingMovieFragment extends Fragment {
                                     jsonarray.getJSONObject(i).getString("startday"),
                                     jsonarray.getJSONObject(i).getDouble("imdb"),
                                     jsonarray.getJSONObject(i).getInt("duration"),
-                                    "http://192.168.0.28:3000/" + jsonarray.getJSONObject(i).getString("image"),
+                                    link + jsonarray.getJSONObject(i).getString("image"),
                                     jsonarray.getJSONObject(i).getInt("ages"),
                                     jsonarray.getJSONObject(i).getInt("format"),
                                     jsonarray.getJSONObject(i).getInt("status")
@@ -110,6 +113,7 @@ public class ComingMovieFragment extends Fragment {
             TextView tv_name = (TextView) view.findViewById(R.id.tv_movie_name);
             TextView tv_movie_release_date = (TextView) view.findViewById(R.id.tv_movie_release_date);
             TextView tv_movie_duration = (TextView) view.findViewById(R.id.tv_movie_duration);
+            Button btn_booking = (Button) view.findViewById(R.id.btn_booking);
 
             Picasso.with(getActivity().getBaseContext()).load(covers[position]).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -134,8 +138,9 @@ public class ComingMovieFragment extends Fragment {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getActivity().getApplicationContext(),MovieDetail.class);
+                    Intent i = new Intent(getActivity().getApplicationContext(), MovieDetail.class);
                     try {
+                        i.putExtra("idmovie", jsonarray.getJSONObject(position).getString("id"));
                         i.putExtra("name", jsonarray.getJSONObject(position).getString("name"));
                         i.putExtra("duration", String.valueOf(jsonarray.getJSONObject(position).getInt("duration")));
                         i.putExtra("director", jsonarray.getJSONObject(position).getString("director"));
@@ -148,14 +153,38 @@ public class ComingMovieFragment extends Fragment {
                         i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position).getDouble("imdb")));
                         i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
                         i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
-                        i.putExtra("poster", "http://192.168.0.28:3000/" + jsonarray.getJSONObject(position).getString("image"));
+                        i.putExtra("poster", link + jsonarray.getJSONObject(position).getString("image"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     startActivity(i);
                 }
             });
-
+            btn_booking.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), ScheduleMovieActivity.class);
+                    try {
+                        i.putExtra("idmovie", jsonarray.getJSONObject(position).getString("id"));
+                        i.putExtra("name", jsonarray.getJSONObject(position).getString("name"));
+                        i.putExtra("duration", String.valueOf(jsonarray.getJSONObject(position).getInt("duration")));
+                        i.putExtra("director", jsonarray.getJSONObject(position).getString("director"));
+                        i.putExtra("actornactress", jsonarray.getJSONObject(position).getString("actornactress"));
+                        i.putExtra("nation", jsonarray.getJSONObject(position).getString("nation"));
+                        i.putExtra("language", jsonarray.getJSONObject(position).getString("language"));
+                        i.putExtra("category", jsonarray.getJSONObject(position).getString("category"));
+                        i.putExtra("startday", jsonarray.getJSONObject(position).getString("startday"));
+                        i.putExtra("format", jsonarray.getJSONObject(position).getString("format"));
+                        i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position).getDouble("imdb")));
+                        i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
+                        i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
+                        i.putExtra("poster", link + jsonarray.getJSONObject(position).getString("image"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    startActivity(i);
+                }
+            });
             return view;
         }
 
