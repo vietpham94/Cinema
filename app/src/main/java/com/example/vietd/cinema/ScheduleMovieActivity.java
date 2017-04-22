@@ -1,7 +1,6 @@
 package com.example.vietd.cinema;
 
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -76,7 +75,7 @@ public class ScheduleMovieActivity extends AppCompatActivity {
         urltrailer = bd.getString("urltrailer");
         content = bd.getString("content");
         poster = bd.getString("poster");
-        MovieInfoForBooking movieInfo = new MovieInfoForBooking(Integer.parseInt(idmovie),name,Double.parseDouble(imdb),poster,Integer.parseInt(duration),director, actornactress, language, nation, startday, Integer.parseInt(format), urltrailer, category, content);
+        MovieInfoForBooking movieInfo = new MovieInfoForBooking(Integer.parseInt(idmovie), name, Double.parseDouble(imdb), poster, Integer.parseInt(duration), director, actornactress, language, nation, startday, Integer.parseInt(format), urltrailer, category, content);
 
         mSocket.connect();
         mSocket.emit("getAllScheduleByIdMovie", idmovie);
@@ -94,8 +93,8 @@ public class ScheduleMovieActivity extends AppCompatActivity {
         tv_name_movie.setText(name);
 
         scheduleAdapter = new ScheduleAdapter(scheduleInfos, movieInfo);
-        scheduleAdapter1 = new ScheduleAdapter1(scheduleInfos1);
-        scheduleAdapter2 = new ScheduleAdapter2(scheduleInfos2);
+        scheduleAdapter1 = new ScheduleAdapter1(scheduleInfos1, movieInfo);
+        scheduleAdapter2 = new ScheduleAdapter2(scheduleInfos2, movieInfo);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -155,31 +154,31 @@ public class ScheduleMovieActivity extends AppCompatActivity {
                 if (jsonarray.getJSONObject(i).getString("showday").equals(strDate.toString())) {
                     switch (jsonarray.getJSONObject(i).getString("time")) {
                         case "1":
-                            item = new ScheduleInfo("09h00");
+                            item = new ScheduleInfo(1, "09h00", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos.add(item);
                             break;
                         case "2":
-                            item = new ScheduleInfo("11h40");
+                            item = new ScheduleInfo(2, "11h40", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos.add(item);
                             break;
                         case "3":
-                            item = new ScheduleInfo("14h20");
+                            item = new ScheduleInfo(3, "14h20", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos.add(item);
                             break;
                         case "4":
-                            item = new ScheduleInfo("17h00");
+                            item = new ScheduleInfo(4, "17h00", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos.add(item);
                             break;
                         case "5":
-                            item = new ScheduleInfo("19h40");
+                            item = new ScheduleInfo(5, "19h40", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos.add(item);
                             break;
                         case "6":
-                            item = new ScheduleInfo("21h20");
+                            item = new ScheduleInfo(6, "21h20", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos.add(item);
                             break;
                         default:
-                            item = new ScheduleInfo("00h00");
+                            item = new ScheduleInfo(0, "00h00", "0", 0);
                             scheduleInfos.add(item);
                             break;
                     }
@@ -189,31 +188,31 @@ public class ScheduleMovieActivity extends AppCompatActivity {
                 if (jsonarray.getJSONObject(i).getString("showday").equals(strTomorrow.toString())) {
                     switch (jsonarray.getJSONObject(i).getString("time")) {
                         case "1":
-                            item1 = new ScheduleInfo1("09h00");
+                            item1 = new ScheduleInfo1(1, "09h00", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos1.add(item1);
                             break;
                         case "2":
-                            item1 = new ScheduleInfo1("11h40");
+                            item1 = new ScheduleInfo1(2, "11h40", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos1.add(item1);
                             break;
                         case "3":
-                            item1 = new ScheduleInfo1("14h20");
+                            item1 = new ScheduleInfo1(3, "14h20", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos1.add(item1);
                             break;
                         case "4":
-                            item1 = new ScheduleInfo1("17h00");
+                            item1 = new ScheduleInfo1(4, "17h00", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos1.add(item1);
                             break;
                         case "5":
-                            item1 = new ScheduleInfo1("19h40");
+                            item1 = new ScheduleInfo1(5, "19h40", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos1.add(item1);
                             break;
                         case "6":
-                            item1 = new ScheduleInfo1("21h20");
+                            item1 = new ScheduleInfo1(6, "21h20", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos1.add(item1);
                             break;
                         default:
-                            item1 = new ScheduleInfo1("00h00");
+                            item1 = new ScheduleInfo1(0, "00h00", "0", 0);
                             scheduleInfos1.add(item1);
                             break;
                     }
@@ -223,31 +222,31 @@ public class ScheduleMovieActivity extends AppCompatActivity {
                 if (jsonarray.getJSONObject(i).getString("showday").equals(strTomorrow2.toString())) {
                     switch (jsonarray.getJSONObject(i).getString("time")) {
                         case "1":
-                            item2 = new ScheduleInfo2("09h00");
+                            item2 = new ScheduleInfo2(1, "09h00", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos2.add(item2);
                             break;
                         case "2":
-                            item2 = new ScheduleInfo2("11h40");
+                            item2 = new ScheduleInfo2(2, "11h40", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos2.add(item2);
                             break;
                         case "3":
-                            item2 = new ScheduleInfo2("14h20");
+                            item2 = new ScheduleInfo2(3, "14h20", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos2.add(item2);
                             break;
                         case "4":
-                            item2 = new ScheduleInfo2("17h00");
+                            item2 = new ScheduleInfo2(4, "17h00", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos2.add(item2);
                             break;
                         case "5":
-                            item2 = new ScheduleInfo2("19h40");
+                            item2 = new ScheduleInfo2(5, "19h40", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos2.add(item2);
                             break;
                         case "6":
-                            item2 = new ScheduleInfo2("21h20");
+                            item2 = new ScheduleInfo2(6, "21h20", jsonarray.getJSONObject(i).getString("showday"), jsonarray.getJSONObject(i).getInt("idroom"));
                             scheduleInfos2.add(item2);
                             break;
                         default:
-                            item2 = new ScheduleInfo2("00h00");
+                            item2 = new ScheduleInfo2(0, "00h00", "0", 0);
                             scheduleInfos2.add(item2);
                             break;
                     }

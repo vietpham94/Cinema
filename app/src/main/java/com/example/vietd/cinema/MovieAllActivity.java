@@ -124,7 +124,6 @@ public class MovieAllActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(MovieAllActivity.this, MovieDetail.class);
-
                 try {
                     i.putExtra("idmovie", jsonarray.getJSONObject(position).getString("id"));
                     i.putExtra("name", jsonarray.getJSONObject(position).getString("name"));

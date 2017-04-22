@@ -13,15 +13,15 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:background="#0015ff"
+            android:background="#000000"
             android:text="CGV Cinema"
             android:textColor="#FFFFFF"
-            android:paddingTop="15dp"
             android:paddingLeft="10dp"
+            android:gravity="center_vertical"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="55dp" />
 
         <ScrollView
             android:layout_width="match_parent"

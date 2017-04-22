@@ -3,6 +3,7 @@ package com.example.vietd.cinema;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     }
 
 
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -40,6 +40,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     public void onBindViewHolder(ScheduleAdapter.MyViewHolder holder, int position) {
         ScheduleInfo scheduleInfo = scheduleInfos.get(position);
         holder.time.setText(scheduleInfo.getTime());
+        holder.id_schedule.setText(String.valueOf(scheduleInfo.getId()));
+        holder.date.setText(scheduleInfo.getDate());
+        holder.room.setText(String.valueOf(scheduleInfo.getRoom()));
     }
 
     @Override
@@ -47,20 +50,26 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
         return scheduleInfos.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView time;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView time, date, id_schedule, room;
 
         public MyViewHolder(View v) {
             super(v);
             time = (TextView) v.findViewById(R.id.txt_schedule);
+            date = (TextView) v.findViewById(R.id.tv_date_schedule);
+            id_schedule = (TextView) v.findViewById(R.id.tv_id_schedule);
+            room = (TextView) v.findViewById(R.id.tv_id_room);
 
             time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final Intent intent;
-                    intent =  new Intent(context, BookingChairActivity.class);
+                    intent = new Intent(context, BookingChairActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("DATA", movie);
+                    bundle.putInt("id_time", Integer.parseInt(id_schedule.getText().toString()));
+                    bundle.putString("date", date.getText().toString());
+                    bundle.putInt("room", Integer.parseInt(room.getText().toString()));
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }
@@ -70,7 +79,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
         @Override
         public void onClick(View v) {
             final Intent intent;
-            intent =  new Intent(context, BookingChairActivity.class);
+            intent = new Intent(context, BookingChairActivity.class);
             context.startActivity(intent);
         }
     }

@@ -5,7 +5,26 @@ package com.example.vietd.cinema;
  */
 
 public class ScheduleInfo1 {
+    int id;
     String time;
+    String date;
+    int room;
+
+    public ScheduleInfo1(int id, String time, String date, int room) {
+        this.id = id;
+        this.time = time;
+        this.date = date;
+        this.room = room;
+
+    }
+
+    public int getRoom() {
+        return room;
+    }
+
+    public void setRoom(int room) {
+        this.room = room;
+    }
 
     public String getTime() {
         return time;
@@ -15,8 +34,19 @@ public class ScheduleInfo1 {
         this.time = time;
     }
 
-    public ScheduleInfo1(String time) {
+    public int getId() {
+        return id;
+    }
 
-        this.time = time;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
