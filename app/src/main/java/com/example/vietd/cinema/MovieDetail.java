@@ -56,11 +56,8 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
         Resources res = getResources();
 
         name.setText(i.getStringExtra("name"));
-        if (Build.VERSION.SDK_INT >= 24) {
-            duration.setText(Html.fromHtml(res.getString(R.string.duration), Html.FROM_HTML_MODE_LEGACY) + i.getStringExtra("duration") + " phút");
-        } else {
+
             duration.setText(Html.fromHtml(res.getString(R.string.duration)) + i.getStringExtra("duration") + " phút");
-        }
         director.setText(Html.fromHtml(res.getString(R.string.director)) + i.getStringExtra("director"));
         actor.setText(Html.fromHtml(res.getString(R.string.actor)) + i.getStringExtra("actornactress"));
         country.setText(Html.fromHtml(res.getString(R.string.nation)) + i.getStringExtra("nation"));

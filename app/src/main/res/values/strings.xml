@@ -4,7 +4,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="duration"><![CDATA[<b>Thời lượng: </b>]]></string>
+    <string name="duration">
+        <![CDATA[<h1>Thời lượng: </h1>]]>
+    </string>
     <string name="director"><![CDATA[<b>Đạo diễn: </b>]]></string>
     <string name="actor"><![CDATA[<b>Diễn viên: </b>]]></string>
     <string name="nation"><![CDATA[<b>Quốc gia: </b>]]></string>

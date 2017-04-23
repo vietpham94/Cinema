@@ -1,58 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
-    android:orientation="vertical">
+    android:background="#dcdcdc"
+    android:orientation="vertical"
+    tools:context="com.example.vietd.cinema.ReceiptActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#000000"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="CGV Cinema"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/movie_poster"
-            android:layout_width="100dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
             app:srcCompat="?attr/actionModeSplitBackground" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/movie_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Movie's Name" />
-
-            <TextView
-                android:id="@+id/movie_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Duration" />
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:textAllCaps="true"
+                android:text="Movie's Name"
+                android:textColor="@color/Black" />
 
             <TextView
                 android:id="@+id/movie_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date" />
+                android:textStyle="bold|italic"
+                android:textSize="15sp"
+                android:text="Date"
+                android:textColor="@color/Black" />
 
             <TextView
                 android:id="@+id/movie_format"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Format" />
+                android:textStyle="bold|italic"
+                android:textSize="15sp"
+                android:text="Format"
+
+                android:textColor="@color/Black" />
 
             <TextView
                 android:id="@+id/movie_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="time" />
+                android:textStyle="bold|italic"
+                android:textSize="15sp"
+                android:text="time"
+                android:textColor="@color/Black" />
         </LinearLayout>
 
     </LinearLayout>
@@ -82,8 +105,10 @@
                 android:layout_height="wrap_content"
                 android:layout_span="3"
                 android:background="#b0b0b0"
-                android:padding="10dip"
-                android:text="Receipt"
+                android:padding="7dip"
+                android:gravity="center"
+                android:text="Thông tin hóa đơn"
+                android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="18dp" />
 
@@ -102,27 +127,27 @@
                 android:background="#dcdcdc"
                 android:gravity="center"
                 android:padding="10dip"
-                android:text="Ticket"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                android:text="Loại vé"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_weight="1"
                 android:background="#d3d3d3"
                 android:gravity="center"
                 android:padding="10dip"
-                android:text="Quantity"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                android:text="Số lượng"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_weight="1"
                 android:background="#cac9c9"
                 android:gravity="center"
                 android:padding="10dip"
-                android:text="Subtotal"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                android:text="Tổng cộng"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
         </TableRow>
 
@@ -134,8 +159,8 @@
                 android:layout_weight="1"
                 android:background="#dcdcdc"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Normal Seat"
+                android:padding="5dip"
+                android:text="Ghế thường"
                 android:textColor="#000000" />
 
             <TextView
@@ -143,8 +168,8 @@
                 android:layout_weight="1"
                 android:background="#d3d3d3"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Quantity"
+                android:padding="5dip"
+                android:text="0"
                 android:textColor="#000000" />
 
             <TextView
@@ -152,8 +177,8 @@
                 android:layout_weight="1"
                 android:background="#cac9c9"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Subtotal"
+                android:padding="5dip"
+                android:text="0"
                 android:textColor="#000000" />
 
         </TableRow>
@@ -166,8 +191,8 @@
                 android:layout_weight="1"
                 android:background="#dcdcdc"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="VIP Seat"
+                android:padding="5dip"
+                android:text="Ghế VIP"
                 android:textColor="#000000" />
 
             <TextView
@@ -175,8 +200,8 @@
                 android:layout_weight="1"
                 android:background="#d3d3d3"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Quantity"
+                android:padding="5dip"
+                android:text="0"
                 android:textColor="#000000" />
 
             <TextView
@@ -184,8 +209,8 @@
                 android:layout_weight="1"
                 android:background="#cac9c9"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Subtotal"
+                android:padding="5dip"
+                android:text="0"
                 android:textColor="#000000" />
 
         </TableRow>
@@ -198,8 +223,8 @@
                 android:layout_weight="1"
                 android:background="#dcdcdc"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Couple Seat"
+                android:padding="5dip"
+                android:text="Ghế đôi"
                 android:textColor="#000000" />
 
             <TextView
@@ -207,8 +232,8 @@
                 android:layout_weight="1"
                 android:background="#d3d3d3"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Quantity"
+                android:padding="5dip"
+                android:text="0"
                 android:textColor="#000000" />
 
             <TextView
@@ -216,8 +241,8 @@
                 android:layout_weight="1"
                 android:background="#cac9c9"
                 android:gravity="center"
-                android:padding="10dip"
-                android:text="Subtotal"
+                android:padding="5dip"
+                android:text="0"
                 android:textColor="#000000" />
 
         </TableRow>
@@ -229,10 +254,11 @@
             android:gravity="center_horizontal">
 
             <TextView
+                android:id="@+id/textView2"
                 android:background="#b0b0b0"
                 android:gravity="center"
-                android:padding="15dip"
-                android:text="Total"
+                android:padding="10dip"
+                android:text="Tổng"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -242,7 +268,7 @@
                 android:layout_weight="1"
                 android:background="#a09f9f"
                 android:gravity="center"
-                android:padding="15dip"
+                android:padding="10dip"
                 android:text="Quantity"
                 android:textColor="#000000"
                 android:textSize="18sp"
@@ -253,7 +279,7 @@
                 android:layout_weight="1"
                 android:background="#a09f9f"
                 android:gravity="center"
-                android:padding="15dip"
+                android:padding="10dip"
                 android:text="Total"
                 android:textColor="#000000"
                 android:textSize="18sp"
@@ -261,21 +287,28 @@
         </TableRow>
 
     </TableLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <Button
-            android:id="@+id/auth_button_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:text="Place order"/>
+            android:id="@+id/btn_place_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/round"
+            android:text="Đặt vé"
+            android:textColor="@color/VIPSeat"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>
+
