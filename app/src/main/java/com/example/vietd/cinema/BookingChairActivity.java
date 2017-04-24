@@ -11,10 +11,14 @@ import android.widget.Toast;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by Optimus on 4/12/2017.
@@ -24,13 +28,17 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
 
     public TextView numbchair;
     Config config = new Config();
-    private Button a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b3, b4, b5, b6, b7, b8, c1, c2, c3, c4, c5, c6, c7, c8, d1, d2, d3, d4, d5, d6, d7, d8, s1, s2, s3, s4, s5, s6, s7, s8, next;
+    private int[] idbtn = {R.id.A1, R.id.A2, R.id.A3, R.id.A4, R.id.A5, R.id.A6, R.id.A7, R.id.A8, R.id.B1, R.id.B2, R.id.B3, R.id.B4, R.id.B5, R.id.B6, R.id.B7, R.id.B8, R.id.C1, R.id.C2, R.id.C3, R.id.C4, R.id.C5, R.id.C6, R.id.C7, R.id.C8, R.id.D1, R.id.D2, R.id.D3, R.id.D4, R.id.D5, R.id.D6, R.id.D7, R.id.D8, R.id.S1, R.id.S2, R.id.S3, R.id.S4, R.id.S5, R.id.S6, R.id.S7, R.id.S8};
+    private String[] btnArray = {"A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8"};
+    private Button A1, A2, A3, A4, A5, A6, A7, A8, B1, B2, B3, B4, B5, B6, B7, B8, C1, C2, C3, C4, C5, C6, C7, C8, D1, D2, D3, D4, D5, D6, D7, D8, E1, E2, E3, E4, E5, E6, E7, E8, next;
+    private String weekDay;
     private ArrayList<String> seat = new ArrayList<String>();
     private ArrayList<Integer> seatType = new ArrayList<Integer>();
-    private int numbNormal = 0, numbVip = 0, numbCouple = 0;
+    private int numbNormal = 0, numbVip = 0, numbCouple = 0, typeOfDay;
     private TextView totalMoney;
     private Socket mSocket = config.mSocket;
     private int id_time;
+    private JSONArray ticketinfoList;
     private MovieInfoForBooking data;
     private String strc = null;
     private ArrayList<Integer> listPrice = new ArrayList<Integer>();
@@ -48,9 +56,65 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                         JSONObject priceS = data.getJSONObject("price");
                         int price = priceS.getInt("price");
                         if (seat.contains(strc)) {
-                            total = tg + price;
+                            switch (strc) {
+                                case "E1":
+                                    total = tg + 2 * price;
+                                    break;
+                                case "E2":
+                                    total = tg + 2 * price;
+                                    break;
+                                case "E3":
+                                    total = tg + 2 * price;
+                                    break;
+                                case "E4":
+                                    total = tg + 2 * price;
+                                    break;
+                                case "E5":
+                                    total = tg + 2 * price;
+                                    break;
+                                case "E6":
+                                    total = tg + 2 * price;
+                                    break;
+                                case "E7":
+                                    total = tg + 2 * price;
+                                    break;
+                                case "E8":
+                                    total = tg + 2 * price;
+                                    break;
+                                default:
+                                    total = tg + price;
+                                    break;
+                            }
                         } else {
-                            total = tg - price;
+                            switch (strc) {
+                                case "E1":
+                                    total = tg - 2 * price;
+                                    break;
+                                case "E2":
+                                    total = tg - 2 * price;
+                                    break;
+                                case "E3":
+                                    total = tg - 2 * price;
+                                    break;
+                                case "E4":
+                                    total = tg - 2 * price;
+                                    break;
+                                case "E5":
+                                    total = tg - 2 * price;
+                                    break;
+                                case "E6":
+                                    total = tg - 2 * price;
+                                    break;
+                                case "E7":
+                                    total = tg - 2 * price;
+                                    break;
+                                case "E8":
+                                    total = tg - 2 * price;
+                                    break;
+                                default:
+                                    total = tg - price;
+                                    break;
+                            }
                         }
                         totalMoney.setText(String.valueOf(total));
                     } catch (JSONException e) {
@@ -98,6 +162,40 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
         }
     };
 
+    private Emitter.Listener resultOccupiedSeat = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        ArrayList<String> Occupied = new ArrayList<String>();
+                        ticketinfoList = data.getJSONArray("ticketinfoList");
+                        String chair = ticketinfoList.getJSONObject(0).getString("namechair");
+
+                        for (int i = 0; i < ticketinfoList.length(); i++) {
+                            for(int j = 0; j < btnArray.length; j++){
+                                if(btnArray[j].contains(ticketinfoList.getJSONObject(i).getString("namechair"))){
+                                    findViewById(idbtn[j]).setEnabled(false);
+                                    findViewById(idbtn[j]).setBackgroundResource(R.drawable.chairoccupied);
+                                }
+                            }
+
+                        }
+                        for (int j = 0; j < idbtn.length; j++){
+                            findViewById(idbtn[j]).setOnClickListener(BookingChairActivity.this);
+                        }
+
+
+                    } catch (JSONException e) {
+                        return;
+                    }
+                }
+            });
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,89 +207,118 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
 
         totalMoney = (TextView) findViewById(R.id.totalMoney);
 
-        a1 = (Button) findViewById(R.id.A1);
-        a2 = (Button) findViewById(R.id.A2);
-        a3 = (Button) findViewById(R.id.A3);
-        a4 = (Button) findViewById(R.id.A4);
-        a5 = (Button) findViewById(R.id.A5);
-        a6 = (Button) findViewById(R.id.A6);
-        a7 = (Button) findViewById(R.id.A7);
-        a8 = (Button) findViewById(R.id.A8);
-        b1 = (Button) findViewById(R.id.B1);
-        b2 = (Button) findViewById(R.id.B2);
-        b3 = (Button) findViewById(R.id.B3);
-        b4 = (Button) findViewById(R.id.B4);
-        b5 = (Button) findViewById(R.id.B5);
-        b6 = (Button) findViewById(R.id.B6);
-        b7 = (Button) findViewById(R.id.B7);
-        b8 = (Button) findViewById(R.id.B8);
-        c1 = (Button) findViewById(R.id.C1);
-        c2 = (Button) findViewById(R.id.C2);
-        c3 = (Button) findViewById(R.id.C3);
-        c4 = (Button) findViewById(R.id.C4);
-        c5 = (Button) findViewById(R.id.C5);
-        c6 = (Button) findViewById(R.id.C6);
-        c7 = (Button) findViewById(R.id.C7);
-        c8 = (Button) findViewById(R.id.C8);
-        d1 = (Button) findViewById(R.id.D1);
-        d2 = (Button) findViewById(R.id.D2);
-        d3 = (Button) findViewById(R.id.D3);
-        d4 = (Button) findViewById(R.id.D4);
-        d5 = (Button) findViewById(R.id.D5);
-        d6 = (Button) findViewById(R.id.D6);
-        d7 = (Button) findViewById(R.id.D7);
-        d8 = (Button) findViewById(R.id.D8);
-        s1 = (Button) findViewById(R.id.S1);
-        s2 = (Button) findViewById(R.id.S2);
-        s3 = (Button) findViewById(R.id.S3);
-        s4 = (Button) findViewById(R.id.S4);
-        s5 = (Button) findViewById(R.id.S5);
-        s6 = (Button) findViewById(R.id.S6);
-        s7 = (Button) findViewById(R.id.S7);
-        s8 = (Button) findViewById(R.id.S8);
+        A1 = (Button) findViewById(R.id.A1);
+        A2 = (Button) findViewById(R.id.A2);
+        A3 = (Button) findViewById(R.id.A3);
+        A4 = (Button) findViewById(R.id.A4);
+        A5 = (Button) findViewById(R.id.A5);
+        A6 = (Button) findViewById(R.id.A6);
+        A7 = (Button) findViewById(R.id.A7);
+        A8 = (Button) findViewById(R.id.A8);
+        B1 = (Button) findViewById(R.id.B1);
+        B2 = (Button) findViewById(R.id.B2);
+        B3 = (Button) findViewById(R.id.B3);
+        B4 = (Button) findViewById(R.id.B4);
+        B5 = (Button) findViewById(R.id.B5);
+        B6 = (Button) findViewById(R.id.B6);
+        B7 = (Button) findViewById(R.id.B7);
+        B8 = (Button) findViewById(R.id.B8);
+        C1 = (Button) findViewById(R.id.C1);
+        C2 = (Button) findViewById(R.id.C2);
+        C3 = (Button) findViewById(R.id.C3);
+        C4 = (Button) findViewById(R.id.C4);
+        C5 = (Button) findViewById(R.id.C5);
+        C6 = (Button) findViewById(R.id.C6);
+        C7 = (Button) findViewById(R.id.C7);
+        C8 = (Button) findViewById(R.id.C8);
+        D1 = (Button) findViewById(R.id.D1);
+        D2 = (Button) findViewById(R.id.D2);
+        D3 = (Button) findViewById(R.id.D3);
+        D4 = (Button) findViewById(R.id.D4);
+        D5 = (Button) findViewById(R.id.D5);
+        D6 = (Button) findViewById(R.id.D6);
+        D7 = (Button) findViewById(R.id.D7);
+        D8 = (Button) findViewById(R.id.D8);
+        E1 = (Button) findViewById(R.id.S1);
+        E2 = (Button) findViewById(R.id.S2);
+        E3 = (Button) findViewById(R.id.S3);
+        E4 = (Button) findViewById(R.id.S4);
+        E5 = (Button) findViewById(R.id.S5);
+        E6 = (Button) findViewById(R.id.S6);
+        E7 = (Button) findViewById(R.id.S7);
+        E8 = (Button) findViewById(R.id.S8);
         numbchair = (TextView) findViewById(R.id.numbTicket);
         next = (Button) findViewById(R.id.button_next);
 
-        a1.setOnClickListener(this);
-        a2.setOnClickListener(this);
-        a3.setOnClickListener(this);
-        a4.setOnClickListener(this);
-        a5.setOnClickListener(this);
-        a6.setOnClickListener(this);
-        a7.setOnClickListener(this);
-        a8.setOnClickListener(this);
-        b1.setOnClickListener(this);
-        b2.setOnClickListener(this);
-        b3.setOnClickListener(this);
-        b4.setOnClickListener(this);
-        b5.setOnClickListener(this);
-        b6.setOnClickListener(this);
-        b7.setOnClickListener(this);
-        b8.setOnClickListener(this);
-        c1.setOnClickListener(this);
-        c2.setOnClickListener(this);
-        c3.setOnClickListener(this);
-        c4.setOnClickListener(this);
-        c5.setOnClickListener(this);
-        c6.setOnClickListener(this);
-        c7.setOnClickListener(this);
-        c8.setOnClickListener(this);
-        d1.setOnClickListener(this);
-        d2.setOnClickListener(this);
-        d3.setOnClickListener(this);
-        d4.setOnClickListener(this);
-        d5.setOnClickListener(this);
-        d6.setOnClickListener(this);
-        d7.setOnClickListener(this);
-        d8.setOnClickListener(this);
-        s1.setOnClickListener(this);
-        s2.setOnClickListener(this);
-        s3.setOnClickListener(this);
-        s4.setOnClickListener(this);
-        s5.setOnClickListener(this);
-        s6.setOnClickListener(this);
-        s7.setOnClickListener(this);
-        s8.setOnClickListener(this);
+        A1.setOnClickListener(this);
+        A2.setOnClickListener(this);
+        A3.setOnClickListener(this);
+        A4.setOnClickListener(this);
+        A5.setOnClickListener(this);
+        A6.setOnClickListener(this);
+        A7.setOnClickListener(this);
+        A8.setOnClickListener(this);
+        B1.setOnClickListener(this);
+        B2.setOnClickListener(this);
+        B3.setOnClickListener(this);
+        B4.setOnClickListener(this);
+        B5.setOnClickListener(this);
+        B6.setOnClickListener(this);
+        B7.setOnClickListener(this);
+        B8.setOnClickListener(this);
+        C1.setOnClickListener(this);
+        C2.setOnClickListener(this);
+        C3.setOnClickListener(this);
+        C4.setOnClickListener(this);
+        C5.setOnClickListener(this);
+        C6.setOnClickListener(this);
+        C7.setOnClickListener(this);
+        C8.setOnClickListener(this);
+        D1.setOnClickListener(this);
+        D2.setOnClickListener(this);
+        D3.setOnClickListener(this);
+        D4.setOnClickListener(this);
+        D5.setOnClickListener(this);
+        D6.setOnClickListener(this);
+        D7.setOnClickListener(this);
+        D8.setOnClickListener(this);
+        E1.setOnClickListener(this);
+        E2.setOnClickListener(this);
+        E3.setOnClickListener(this);
+        E4.setOnClickListener(this);
+        E5.setOnClickListener(this);
+        E6.setOnClickListener(this);
+        E7.setOnClickListener(this);
+        E8.setOnClickListener(this);
+
+
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+
+        Calendar calendar = Calendar.getInstance();
+        weekDay = dayFormat.format(calendar.getTime());
+        switch (String.valueOf(weekDay)) {
+            case "Tuesday":
+                typeOfDay = 1;
+                break;
+            case "Monday":
+                typeOfDay = 1;
+                break;
+            case "Wednesday":
+                typeOfDay = 1;
+                break;
+            case "Thursday":
+                typeOfDay = 1;
+                break;
+            case "Friday":
+                typeOfDay = 1;
+                break;
+            case "Saturday":
+                typeOfDay = 2;
+                break;
+            case "Sunday":
+                typeOfDay = 2;
+                break;
+        }
 
 
 //        Intent intent = getIntent();
@@ -206,24 +333,29 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
             timeFrame = 2;
         }
 
-        getListPrice(1, timeFrame, data.getFormat());
-        getListPrice(2, timeFrame, data.getFormat());
-        getListPrice(3, timeFrame, data.getFormat());
+        getListPrice(1, timeFrame, typeOfDay, data.getFormat());
+        getListPrice(2, timeFrame, typeOfDay, data.getFormat());
+        getListPrice(3, timeFrame, typeOfDay, data.getFormat());
 
         mSocket.on("ListpriceOfSeat", ListpriceOfSeat);
+        mSocket.emit("getOccupiedSeat", date, room, id_time);
+        mSocket.on("resultOccupiedSeat", resultOccupiedSeat);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (numbCouple == 0 && numbNormal == 0 && numbVip == 0) {
                     Toast.makeText(BookingChairActivity.this, "Bạn chưa chọn ghế nào!", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Intent i = new Intent(BookingChairActivity.this, ReceiptActivity.class);
                     Bundle bn = new Bundle();
                     bn.putSerializable("data", data);
                     bn.putInt("id_time", id_time);
                     bn.putString("date", date);
                     bn.putStringArrayList("seat", seat);
+                    bn.putInt("room", room);
+                    bn.putInt("typeOfDay", typeOfDay);
+                    bn.putInt("typeOfMovie", data.getFormat());
                     bn.putInt("numbNormal", numbNormal);
                     bn.putInt("numbVip", numbVip);
                     bn.putInt("numbCouple", numbCouple);
@@ -245,26 +377,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("A1");
                         numbNormal++;
-                        a1.setBackgroundResource(R.drawable.chairchoosing);
+                        A1.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A1");
                     numbNormal--;
-                    a1.setBackgroundResource(R.drawable.chairnormal);
+                    A1.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.A2:
@@ -274,26 +406,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                         seat.add("A2");
                         numbNormal++;
                         seatType.add(1);
-                        a2.setBackgroundResource(R.drawable.chairchoosing);
+                        A2.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A2");
                     numbNormal--;
-                    a2.setBackgroundResource(R.drawable.chairnormal);
+                    A2.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.A3:
@@ -302,26 +434,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("A3");
                         numbNormal++;
-                        a3.setBackgroundResource(R.drawable.chairchoosing);
+                        A3.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A3");
                     numbNormal--;
-                    a3.setBackgroundResource(R.drawable.chairnormal);
+                    A3.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.A4:
@@ -330,26 +462,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("A4");
                         numbNormal++;
-                        a4.setBackgroundResource(R.drawable.chairchoosing);
+                        A4.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A4");
                     numbNormal--;
-                    a4.setBackgroundResource(R.drawable.chairnormal);
+                    A4.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.A5:
@@ -358,26 +490,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("A5");
                         numbNormal++;
-                        a5.setBackgroundResource(R.drawable.chairchoosing);
+                        A5.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A5");
                     numbNormal--;
-                    a5.setBackgroundResource(R.drawable.chairnormal);
+                    A5.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.A6:
@@ -386,26 +518,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("A6");
                         numbNormal++;
-                        a6.setBackgroundResource(R.drawable.chairchoosing);
+                        A6.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A6");
                     numbNormal--;
-                    a6.setBackgroundResource(R.drawable.chairnormal);
+                    A6.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.A7:
@@ -413,25 +545,25 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                 if (!seat.contains("A7")) {
                     if (seat.size() < 8) {
                         seat.add("A7");
-                        a7.setBackgroundResource(R.drawable.chairchoosing);
+                        A7.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A7");
-                    a7.setBackgroundResource(R.drawable.chairnormal);
+                    A7.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.A8:
@@ -440,26 +572,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("A8");
                         numbNormal++;
-                        a8.setBackgroundResource(R.drawable.chairchoosing);
+                        A8.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("A8");
                     numbNormal--;
-                    a8.setBackgroundResource(R.drawable.chairnormal);
+                    A8.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B1:
@@ -468,26 +600,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B1");
                         numbNormal++;
-                        b1.setBackgroundResource(R.drawable.chairchoosing);
+                        B1.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B1");
                     numbNormal--;
-                    b1.setBackgroundResource(R.drawable.chairnormal);
+                    B1.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B2:
@@ -496,26 +628,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B2");
                         numbNormal++;
-                        b2.setBackgroundResource(R.drawable.chairchoosing);
+                        B2.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B2");
                     numbNormal--;
-                    b2.setBackgroundResource(R.drawable.chairnormal);
+                    B2.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B3:
@@ -524,26 +656,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B3");
                         numbNormal++;
-                        b3.setBackgroundResource(R.drawable.chairchoosing);
+                        B3.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B3");
                     numbNormal--;
-                    b3.setBackgroundResource(R.drawable.chairnormal);
+                    B3.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B4:
@@ -552,26 +684,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B4");
                         numbNormal++;
-                        b4.setBackgroundResource(R.drawable.chairchoosing);
+                        B4.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B4");
                     numbNormal--;
-                    b4.setBackgroundResource(R.drawable.chairnormal);
+                    B4.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B5:
@@ -580,26 +712,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B5");
                         numbNormal++;
-                        b5.setBackgroundResource(R.drawable.chairchoosing);
+                        B5.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B5");
                     numbNormal--;
-                    b5.setBackgroundResource(R.drawable.chairnormal);
+                    B5.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B6:
@@ -608,26 +740,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B6");
                         numbNormal++;
-                        b6.setBackgroundResource(R.drawable.chairchoosing);
+                        B6.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B6");
                     numbNormal--;
-                    b6.setBackgroundResource(R.drawable.chairnormal);
+                    B6.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B7:
@@ -636,26 +768,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B7");
                         numbNormal++;
-                        b7.setBackgroundResource(R.drawable.chairchoosing);
+                        B7.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B7");
                     numbNormal--;
-                    b7.setBackgroundResource(R.drawable.chairnormal);
+                    B7.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.B8:
@@ -664,26 +796,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("B8");
                         numbNormal++;
-                        b8.setBackgroundResource(R.drawable.chairchoosing);
+                        B8.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("B8");
                     numbNormal--;
-                    b8.setBackgroundResource(R.drawable.chairnormal);
+                    B8.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C1:
@@ -692,26 +824,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C1");
                         numbNormal++;
-                        c1.setBackgroundResource(R.drawable.chairchoosing);
+                        C1.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C1");
                     numbNormal--;
-                    c1.setBackgroundResource(R.drawable.chairnormal);
+                    C1.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C2:
@@ -720,26 +852,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C2");
                         numbNormal++;
-                        c2.setBackgroundResource(R.drawable.chairchoosing);
+                        C2.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C2");
                     numbNormal--;
-                    c2.setBackgroundResource(R.drawable.chairnormal);
+                    C2.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C3:
@@ -748,26 +880,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C3");
                         numbVip++;
-                        c3.setBackgroundResource(R.drawable.chairchoosing);
+                        C3.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C3");
                     numbVip--;
-                    c3.setBackgroundResource(R.drawable.chairs);
+                    C3.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C4:
@@ -776,26 +908,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C4");
                         numbVip++;
-                        c4.setBackgroundResource(R.drawable.chairchoosing);
+                        C4.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C4");
                     numbVip--;
-                    c4.setBackgroundResource(R.drawable.chairs);
+                    C4.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C5:
@@ -804,26 +936,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C5");
                         numbVip++;
-                        c5.setBackgroundResource(R.drawable.chairchoosing);
+                        C5.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C5");
                     numbVip--;
-                    c5.setBackgroundResource(R.drawable.chairs);
+                    C5.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C6:
@@ -832,26 +964,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C6");
                         numbVip++;
-                        c6.setBackgroundResource(R.drawable.chairchoosing);
+                        C6.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C6");
                     numbVip--;
-                    c6.setBackgroundResource(R.drawable.chairs);
+                    C6.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C7:
@@ -860,26 +992,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C7");
                         numbNormal++;
-                        c7.setBackgroundResource(R.drawable.chairchoosing);
+                        C7.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C7");
                     numbNormal--;
-                    c7.setBackgroundResource(R.drawable.chairnormal);
+                    C7.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.C8:
@@ -888,26 +1020,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("C8");
                         numbNormal++;
-                        c8.setBackgroundResource(R.drawable.chairchoosing);
+                        C8.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("C8");
                     numbNormal--;
-                    c8.setBackgroundResource(R.drawable.chairnormal);
+                    C8.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D1:
@@ -916,26 +1048,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("D1");
                         numbNormal++;
-                        d1.setBackgroundResource(R.drawable.chairchoosing);
+                        D1.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D1");
                     numbNormal--;
-                    d1.setBackgroundResource(R.drawable.chairnormal);
+                    D1.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D2:
@@ -944,26 +1076,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("D2");
                         numbNormal++;
-                        d2.setBackgroundResource(R.drawable.chairchoosing);
+                        D2.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D2");
                     numbNormal--;
-                    d2.setBackgroundResource(R.drawable.chairnormal);
+                    D2.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D3:
@@ -972,26 +1104,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("D3");
                         numbVip++;
-                        d3.setBackgroundResource(R.drawable.chairchoosing);
+                        D3.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D3");
                     numbVip--;
-                    d3.setBackgroundResource(R.drawable.chairs);
+                    D3.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D4:
@@ -1000,26 +1132,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("D4");
                         numbVip++;
-                        d4.setBackgroundResource(R.drawable.chairchoosing);
+                        D4.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D4");
                     numbVip--;
-                    d4.setBackgroundResource(R.drawable.chairs);
+                    D4.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D5:
@@ -1028,26 +1160,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("D5");
                         numbVip++;
-                        d5.setBackgroundResource(R.drawable.chairchoosing);
+                        D5.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D5");
                     numbVip--;
-                    d5.setBackgroundResource(R.drawable.chairs);
+                    D5.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D6:
@@ -1056,26 +1188,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("D6");
                         numbVip++;
-                        d6.setBackgroundResource(R.drawable.chairchoosing);
+                        D6.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(2, timeFrame, data.getFormat());
+                        getPrice(2, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D6");
                     numbVip--;
-                    d6.setBackgroundResource(R.drawable.chairs);
+                    D6.setBackgroundResource(R.drawable.chairs);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(2, timeFrame, data.getFormat());
+                    getPrice(2, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D7:
@@ -1084,26 +1216,26 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 8) {
                         seat.add("D7");
                         numbNormal++;
-                        d7.setBackgroundResource(R.drawable.chairchoosing);
+                        D7.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D7");
                     numbNormal--;
-                    d7.setBackgroundResource(R.drawable.chairnormal);
+                    D7.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.D8:
@@ -1112,282 +1244,282 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
                     if (seat.size() < 7) {
                         seat.add("D8");
                         numbNormal++;
-                        d8.setBackgroundResource(R.drawable.chairchoosing);
+                        D8.setBackgroundResource(R.drawable.chairchoosing);
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(1, timeFrame, data.getFormat());
+                        getPrice(1, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     seat.remove("D8");
                     numbNormal--;
-                    d8.setBackgroundResource(R.drawable.chairnormal);
+                    D8.setBackgroundResource(R.drawable.chairnormal);
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(1, timeFrame, data.getFormat());
+                    getPrice(1, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S1:
-                strc = "S1";
-                if (!seat.contains("S1")) {
+                strc = "E1";
+                if (!seat.contains("E1")) {
                     if (seat.size() < 7) {
-                        seat.add("S1");
-                        s1.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S2");
-                        s2.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E1");
+                        E1.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E2");
+                        E2.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S1");
-                    s1.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S2");
-                    s2.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E1");
+                    E1.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E2");
+                    E2.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S2:
-                strc = "S2";
-                if (!seat.contains("S2")) {
+                strc = "E2";
+                if (!seat.contains("E2")) {
                     if (seat.size() < 7) {
-                        seat.add("S2");
-                        s2.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S1");
-                        s1.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E2");
+                        E2.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E1");
+                        E1.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S2");
-                    s2.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S1");
-                    s1.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E2");
+                    E2.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E1");
+                    E1.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S3:
-                strc = "S3";
-                if (!seat.contains("S3")) {
+                strc = "E3";
+                if (!seat.contains("E3")) {
                     if (seat.size() < 7) {
-                        seat.add("S3");
-                        s3.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S4");
-                        s4.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E3");
+                        E3.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E4");
+                        E4.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S3");
-                    s3.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S4");
-                    s4.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E3");
+                    E3.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E4");
+                    E4.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S4:
-                strc = "S4";
-                if (!seat.contains("S4")) {
+                strc = "E4";
+                if (!seat.contains("E4")) {
                     if (seat.size() < 7) {
-                        seat.add("S4");
-                        s4.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S3");
-                        s3.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E4");
+                        E4.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E3");
+                        E3.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S4");
-                    s4.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S3");
-                    s3.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E4");
+                    E4.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E3");
+                    E3.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S5:
-                strc = "S5";
-                if (!seat.contains("S5")) {
+                strc = "E5";
+                if (!seat.contains("E5")) {
                     if (seat.size() < 7) {
-                        seat.add("S5");
-                        s5.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S6");
-                        s6.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E5");
+                        E5.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E6");
+                        E6.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S5");
-                    s5.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S6");
-                    s6.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E5");
+                    E5.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E6");
+                    E6.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S6:
-                strc = "S6";
-                if (!seat.contains("S6")) {
+                strc = "E6";
+                if (!seat.contains("E6")) {
                     if (seat.size() < 7) {
-                        seat.add("S6");
-                        s6.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S5");
-                        s5.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E6");
+                        E6.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E5");
+                        E5.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S6");
-                    s6.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S5");
-                    s5.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E6");
+                    E6.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E5");
+                    E5.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S7:
-                strc = "S7";
-                if (!seat.contains("S7")) {
+                strc = "E7";
+                if (!seat.contains("E7")) {
                     if (seat.size() < 7) {
-                        seat.add("S7");
-                        s7.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S8");
-                        s8.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E7");
+                        E7.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E8");
+                        E8.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S7");
-                    s7.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S8");
-                    s8.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E7");
+                    E7.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E8");
+                    E8.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             case R.id.S8:
-                strc = "S8";
-                if (!seat.contains("S8")) {
+                strc = "E8";
+                if (!seat.contains("E8")) {
                     if (seat.size() < 7) {
-                        seat.add("S8");
-                        s8.setBackgroundResource(R.drawable.chairchoosing);
-                        seat.add("S7");
-                        s7.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E8");
+                        E8.setBackgroundResource(R.drawable.chairchoosing);
+                        seat.add("E7");
+                        E7.setBackgroundResource(R.drawable.chairchoosing);
                         numbCouple += 2;
                         numbchair.setText("" + seat.size() + "");
                         int timeFrame = 1;
                         if (id_time >= 4) {
                             timeFrame = 2;
                         }
-                        getPrice(3, timeFrame, data.getFormat());
+                        getPrice(3, timeFrame, typeOfDay, data.getFormat());
                     } else {
                         Toast.makeText(this, "Bạn chỉ được chọn tối đa 8 ghế", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    seat.remove("S8");
-                    s8.setBackgroundResource(R.drawable.chairsweet);
-                    seat.remove("S7");
-                    s7.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E8");
+                    E8.setBackgroundResource(R.drawable.chairsweet);
+                    seat.remove("E7");
+                    E7.setBackgroundResource(R.drawable.chairsweet);
                     numbCouple -= 2;
                     numbchair.setText("" + seat.size() + "");
                     int timeFrame = 1;
                     if (id_time >= 4) {
                         timeFrame = 2;
                     }
-                    getPrice(3, timeFrame, data.getFormat());
+                    getPrice(3, timeFrame, typeOfDay, data.getFormat());
                 }
                 break;
             default:
@@ -1395,12 +1527,12 @@ public class BookingChairActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public void getPrice(int typeOfChair, int TimeFrame, int typeOfMovie) {
-        mSocket.emit("getPrice", typeOfMovie, TimeFrame, typeOfChair);
+    public void getPrice(int typeOfChair, int TimeFrame, int TypeOfDay, int typeOfMovie) {
+        mSocket.emit("getPrice", typeOfMovie, TimeFrame, TypeOfDay, typeOfChair);
     }
 
-    public void getListPrice(int typeOfChair, int TimeFrame, int typeOfMovie) {
-        mSocket.emit("getListPrice", typeOfMovie, TimeFrame, typeOfChair);
+    public void getListPrice(int typeOfChair, int TimeFrame, int TypeOfDay, int typeOfMovie) {
+        mSocket.emit("getListPrice", typeOfMovie, TimeFrame, TypeOfDay, typeOfChair);
     }
 
     public void getNameChair(int IdMovie, int TimeFrame, String date) {

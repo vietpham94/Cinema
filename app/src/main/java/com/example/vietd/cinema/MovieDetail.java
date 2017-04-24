@@ -29,6 +29,7 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
     private TextView name, duration, director, actor, country, language, genres, date, imdb, format, content;
     private ImageView poster;
     private YouTubePlayerView trailer;
+    private UserSessionManager userSessionManager;
     private Button btn_Booking;
 
 
@@ -83,22 +84,27 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
         btn_Booking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MovieDetail.this, ScheduleMovieActivity.class);
-                intent.putExtra("idmovie", i.getStringExtra("idmovie"));
-                intent.putExtra("name", i.getStringExtra("name"));
-                intent.putExtra("duration", i.getStringExtra("duration"));
-                intent.putExtra("director", i.getStringExtra("director"));
-                intent.putExtra("actornactress", i.getStringExtra("actornactress"));
-                intent.putExtra("nation", i.getStringExtra("nation"));
-                intent.putExtra("language", i.getStringExtra("language"));
-                intent.putExtra("category", i.getStringExtra("category"));
-                intent.putExtra("startday", i.getStringExtra("startday"));
-                intent.putExtra("format", i.getStringExtra("format"));
-                intent.putExtra("imdb", i.getStringExtra("imdb"));
-                intent.putExtra("urltrailer", i.getStringExtra("urltrailer"));
-                intent.putExtra("content", i.getStringExtra("content"));
-                intent.putExtra("poster", i.getStringExtra("poster"));
-                startActivity(intent);
+                userSessionManager = new UserSessionManager(getApplicationContext());
+                if(userSessionManager.checkLogin()) {
+                    Intent intent = new Intent(MovieDetail.this, ScheduleMovieActivity.class);
+                    intent.putExtra("idmovie", i.getStringExtra("idmovie"));
+                    intent.putExtra("name", i.getStringExtra("name"));
+                    intent.putExtra("duration", i.getStringExtra("duration"));
+                    intent.putExtra("director", i.getStringExtra("director"));
+                    intent.putExtra("actornactress", i.getStringExtra("actornactress"));
+                    intent.putExtra("nation", i.getStringExtra("nation"));
+                    intent.putExtra("language", i.getStringExtra("language"));
+                    intent.putExtra("category", i.getStringExtra("category"));
+                    intent.putExtra("startday", i.getStringExtra("startday"));
+                    intent.putExtra("format", i.getStringExtra("format"));
+                    intent.putExtra("imdb", i.getStringExtra("imdb"));
+                    intent.putExtra("urltrailer", i.getStringExtra("urltrailer"));
+                    intent.putExtra("content", i.getStringExtra("content"));
+                    intent.putExtra("poster", i.getStringExtra("poster"));
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(MovieDetail.this, "Vui lòng đăng nhập trước khi đặt vé!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

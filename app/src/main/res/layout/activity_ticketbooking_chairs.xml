@@ -628,7 +628,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text=" Ghế Thường"
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -651,7 +651,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text=" Ghế VIP"
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -675,7 +675,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text=" Ghế đôi"
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -707,7 +707,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text=" Ghế đã sử dụng"
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -730,7 +730,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text=" Ghế đang chọn"
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -775,7 +775,7 @@
                             android:gravity="center"
                             android:padding="2dp"
                             android:text="0"
-                            android:textColor="@color/WhiteX" />
+                            android:textColor="@color/Black" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -783,7 +783,7 @@
                             android:layout_weight="1"
                             android:padding="2dp"
                             android:text="ghế đã được chọn"
-                            android:textColor="@color/WhiteX" />
+                            android:textColor="@color/Black" />
 
                     </LinearLayout>
 
@@ -800,7 +800,7 @@
                             android:gravity="center_vertical"
                             android:padding="2dp"
                             android:text="Tổng tiền: "
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -812,7 +812,7 @@
                             android:gravity="center_vertical"
                             android:padding="2dp"
                             android:text="0"
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -823,7 +823,7 @@
                             android:gravity="center_vertical"
                             android:padding="2dp"
                             android:text="VNĐ"
-                            android:textColor="@color/WhiteX"
+                            android:textColor="@color/Black"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>

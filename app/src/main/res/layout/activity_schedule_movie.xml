@@ -40,7 +40,7 @@
                 android:shadowColor="#fff"
                 android:shadowRadius="7.0"
                 android:text="GHOST IN THE SHELL"
-                android:textColor="@color/WhiteX"
+                android:textColor="@color/Black"
                 android:textSize="22sp"
                 android:textStyle="bold|italic" />
 
@@ -54,11 +54,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:shadowColor="#000"
-                    android:shadowRadius="5.0"
                     android:text="20/04/2017 - Thứ 5"
                     android:textAllCaps="false"
-                    android:textColor="@color/VIPSeat"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16.5sp"
                     android:textStyle="bold"
                     android:typeface="monospace" />
@@ -83,11 +81,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:shadowColor="#000"
-                    android:shadowRadius="5.0"
                     android:text="21/04/2017 - Thứ 6"
                     android:textAllCaps="false"
-                    android:textColor="@color/VIPSeat"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16.5sp"
                     android:textStyle="bold"
                     android:typeface="monospace" />
@@ -112,11 +108,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:shadowColor="#000"
-                    android:shadowRadius="5.0"
                     android:text="22/04/2017 - Thứ 7"
                     android:textAllCaps="false"
-                    android:textColor="@color/VIPSeat"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16.5sp"
                     android:textStyle="bold"
                     android:typeface="monospace" />

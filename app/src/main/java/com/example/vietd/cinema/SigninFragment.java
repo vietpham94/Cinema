@@ -39,46 +39,30 @@ public class SigninFragment extends Fragment {
     SharedPreferences.Editor editor;
     UserSessionManager userSessionManager;
 
-    String u, p; // user , pass send from server when login success
     private Emitter.Listener resultSignin = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    progressDialog.setMessage("Loading...");
-                    ShowDialog();
                     JSONObject jsonObject = (JSONObject) args[0];
-                    String data = null;
-
+                    String result = null;
+                    JSONObject data = null;
                     try {
-                        data = jsonObject.getString("result");
-                        u = jsonObject.getString("user");
-                        p = jsonObject.getString("pass");
+                        result = jsonObject.getString("result");
+                        if (result.equals("true")) {
+                            data = jsonObject.getJSONObject("user");
+                            Toast.makeText(getActivity(), "Login Complete!", Toast.LENGTH_SHORT).show();
+                            CreateUserLoginSeassion(data.getString("username"), data.getString("idcustomer"), data.getString("fullname"), data.getString("email"), data.getString("birthday"), data.getString("gender"), data.getString("identitycard"), data.getString("phone"));
+                            HideDialog();
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                            HideDialog();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
-                    if (data == "true") {
-
-//                        Toast.makeText(getActivity(), u, Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(MainActivity.ACTION_UPDATE);
-//                        intent.putExtra("username", u);
-//                        intent.putExtra("password", p);
-//                        getActivity().sendBroadcast(intent);
-                        Toast.makeText(getActivity(), "Login Complete", Toast.LENGTH_SHORT).show();
-                        CreateUserLoginSeassion(u, p);
-
-//                        Intent intent = new Intent(MainActivity.ACTION_UPDATE);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        getActivity().sendBroadcast(intent);
-
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-
-                    } else {
-                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-                        HideDialog();
                     }
                 }
             });
@@ -153,7 +137,6 @@ public class SigninFragment extends Fragment {
         progressDialog.setMessage("Sign in.....");
         ShowDialog();
         config.mSocket.emit("signin", user, pass);
-
     }
 
     private void ShowDialog() {
@@ -170,11 +153,19 @@ public class SigninFragment extends Fragment {
         }
     }
 
-    private void CreateUserLoginSeassion(String user, String pass) {
+    private void CreateUserLoginSeassion(String user, String idcustomer, String fullname, String email, String birthday, String gender,String identitycard, String phone) {
         editor = getActivity().getSharedPreferences(userSessionManager.PREFER_NAME, userSessionManager.PRIVATE_MODE).edit();
+
         editor.putBoolean(userSessionManager.IS_USER_LOGIN, true);
         editor.putString(userSessionManager.KEY_USERNAME, user);
-        editor.putString(userSessionManager.KEY_PASSWORD, pass);
+        editor.putString(userSessionManager.KEY_idcustomer, idcustomer);
+        editor.putString(userSessionManager.KEY_fullname, fullname);
+        editor.putString(userSessionManager.KEY_email, email);
+        editor.putString(userSessionManager.KEY_birthday, birthday);
+        editor.putString(userSessionManager.KEY_gender, gender);
+        editor.putString(userSessionManager.KEY_identitycard, identitycard);
+        editor.putString(userSessionManager.KEY_phone, phone);
+
         editor.commit();
     }
 

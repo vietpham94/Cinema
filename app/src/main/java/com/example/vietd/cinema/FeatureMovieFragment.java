@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
@@ -38,6 +39,7 @@ public class FeatureMovieFragment extends Fragment {
     private ArrayList<MovieInfo> arrayList;
     private PagerContainer pagerContainer;
     private ViewPager viewPager;
+    private UserSessionManager userSessionManager;
     private Emitter.Listener getData = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -159,26 +161,31 @@ public class FeatureMovieFragment extends Fragment {
             btn_booking.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), ScheduleMovieActivity.class);
-                    try {
-                        i.putExtra("idmovie", jsonarray.getJSONObject(position).getString("id"));
-                        i.putExtra("name", jsonarray.getJSONObject(position).getString("name"));
-                        i.putExtra("duration", String.valueOf(jsonarray.getJSONObject(position).getInt("duration")));
-                        i.putExtra("director", jsonarray.getJSONObject(position).getString("director"));
-                        i.putExtra("actornactress", jsonarray.getJSONObject(position).getString("actornactress"));
-                        i.putExtra("nation", jsonarray.getJSONObject(position).getString("nation"));
-                        i.putExtra("language", jsonarray.getJSONObject(position).getString("language"));
-                        i.putExtra("category", jsonarray.getJSONObject(position).getString("category"));
-                        i.putExtra("startday", jsonarray.getJSONObject(position).getString("startday"));
-                        i.putExtra("format", jsonarray.getJSONObject(position).getString("format"));
-                        i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position).getDouble("imdb")));
-                        i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
-                        i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
-                        i.putExtra("poster", link + jsonarray.getJSONObject(position).getString("image"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    userSessionManager = new UserSessionManager(getActivity().getApplicationContext());
+                    if(userSessionManager.checkLogin()) {
+                        Intent i = new Intent(getActivity(), ScheduleMovieActivity.class);
+                        try {
+                            i.putExtra("idmovie", jsonarray.getJSONObject(position).getString("id"));
+                            i.putExtra("name", jsonarray.getJSONObject(position).getString("name"));
+                            i.putExtra("duration", String.valueOf(jsonarray.getJSONObject(position).getInt("duration")));
+                            i.putExtra("director", jsonarray.getJSONObject(position).getString("director"));
+                            i.putExtra("actornactress", jsonarray.getJSONObject(position).getString("actornactress"));
+                            i.putExtra("nation", jsonarray.getJSONObject(position).getString("nation"));
+                            i.putExtra("language", jsonarray.getJSONObject(position).getString("language"));
+                            i.putExtra("category", jsonarray.getJSONObject(position).getString("category"));
+                            i.putExtra("startday", jsonarray.getJSONObject(position).getString("startday"));
+                            i.putExtra("format", jsonarray.getJSONObject(position).getString("format"));
+                            i.putExtra("imdb", String.valueOf(jsonarray.getJSONObject(position).getDouble("imdb")));
+                            i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
+                            i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
+                            i.putExtra("poster", link + jsonarray.getJSONObject(position).getString("image"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        startActivity(i);
+                    }else {
+                        Toast.makeText(getActivity().getApplicationContext(), "Vui lòng đăng nhập trước khi đặt vé!", Toast.LENGTH_SHORT).show();
                     }
-                    startActivity(i);
                 }
             });
 

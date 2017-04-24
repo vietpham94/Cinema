@@ -11,7 +11,7 @@
     <color name="NormalSeat">#8B4513</color>
     <color name="Black">#FF030303</color>
     <color name="LightBlack">#2e2e2e</color>
-    <color name="Background">#7E898D</color>
-    <color name="White">#d1d1ce</color>
+    <color name="Background">#e7e8e9</color>
+    <color name="White">#ecece5</color>
     <color name="WhiteX">#ffffff</color>
 </resources>

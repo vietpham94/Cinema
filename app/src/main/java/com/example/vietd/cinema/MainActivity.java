@@ -1,9 +1,11 @@
 package com.example.vietd.cinema;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private UserSessionManager userSessionManager;
     private String username = "";
     private TextView tv_name_user;
+    private HashMap<String, String>  user;
 
 
     @Override
@@ -40,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
         navigation_draw = (LinearLayout) findViewById(R.id.navigation_draw);
-        lv_menu = (ListView) findViewById(R.id.lv_menu);
         tv_name_user = (TextView)findViewById(R.id.tv_name_user);
 
         userSessionManager = new UserSessionManager(getApplicationContext());
+
         if(userSessionManager.checkLogin()) {
-            HashMap<String, String> user = userSessionManager.getUserDetails();
-            username = user.get(userSessionManager.KEY_USERNAME);
+            user = userSessionManager.getUserDetails();
+            username = user.get(userSessionManager.KEY_fullname);
             tv_name_user.setText(username);
         }else{
             tv_name_user.setText("Plsease login!");
@@ -83,15 +86,42 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                 }
 
+                if (item_menu.equals("Logout")) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(MainActivity.this);
+
+                    b.setTitle("Bạn thực sự muốn đăng xuất ?");
+
+                    b.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            userSessionManager.logoutUser();
+                            createDraw();
+                            tv_name_user.setText("Plsease login!");
+                        }
+                    });
+
+                    b.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    b.create().show();
+                }
+
                 mDrawerLayout.closeDrawer(navigation_draw);
             }
         });
     }
-
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
     public void createDraw() {
         lv_menu = (ListView) findViewById(R.id.lv_menu);
         arrayMenu = new ArrayList<item_menu_info>();
-        if(username.equals("")){
+        if(!userSessionManager.checkLogin()){
             item_menu_info item = new item_menu_info(R.drawable.ic_exit_to_app_black_24dp, "Login");
             item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Home");
             item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "List movies");
