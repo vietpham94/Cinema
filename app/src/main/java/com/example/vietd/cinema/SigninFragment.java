@@ -52,7 +52,7 @@ public class SigninFragment extends Fragment {
                         result = jsonObject.getString("result");
                         if (result.equals("true")) {
                             data = jsonObject.getJSONObject("user");
-                            Toast.makeText(getActivity(), "Login Complete!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             CreateUserLoginSeassion(data.getString("username"), data.getString("idcustomer"), data.getString("fullname"), data.getString("email"), data.getString("birthday"), data.getString("gender"), data.getString("identitycard"), data.getString("phone"));
                             HideDialog();
                             Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -94,12 +94,20 @@ public class SigninFragment extends Fragment {
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = user.getText().toString();
-                String password = pass.getText().toString();
+                String username = user.getText().toString().trim();
+                String password = pass.getText().toString().trim();
                 if (user.length() > 0 && pass.length() > 0) {
                     CheckSignin(username, password);
                 } else {
-                    Toast.makeText(getActivity(), "Please Enter username and password", Toast.LENGTH_SHORT).show();
+                    if(user.length() > 0 && password.length() <= 0){
+                        Toast.makeText(getActivity(), "Vui lòng nhập Mật khẩu!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(user.length() <= 0 && password.length() > 0){
+                            Toast.makeText(getActivity(), "Vui lòng nhập Tên tài khoản!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getActivity(), "Vui lòng nhập Tên tài khoản và Mật khẩu!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });

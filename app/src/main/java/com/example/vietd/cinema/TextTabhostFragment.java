@@ -45,7 +45,7 @@ public class TextTabhostFragment extends Fragment {
                 tv_showing.setTextColor(Color.WHITE);
                 Fragment showingMovieFragment = new ShowingMovieFragment();
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame_text_tabhost, showingMovieFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.content_frame_text_tabhost, showingMovieFragment).commit();
             }
         });
         tv_feature.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,7 @@ public class TextTabhostFragment extends Fragment {
                 tv_feature.setTextColor(Color.WHITE);
                 Fragment featureMovieFragment = new FeatureMovieFragment();
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame_text_tabhost, featureMovieFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.content_frame_text_tabhost, featureMovieFragment).commit();
             }
         });
         tv_comming.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +67,7 @@ public class TextTabhostFragment extends Fragment {
                 tv_feature.setTextColor(Color.GRAY);
                 Fragment comingMovieFragment = new ComingMovieFragment();
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame_text_tabhost, comingMovieFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.content_frame_text_tabhost, comingMovieFragment).commit();
             }
         });
         return myView;

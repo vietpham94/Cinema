@@ -38,13 +38,13 @@ public class MovieAdapter extends ArrayAdapter {
         movie_name.setText(String.valueOf(data.get(position).getName()));
 
         TextView movie_release = (TextView) v.findViewById(R.id.movie_date_release);
-        movie_release.setText("Release Date: " + String.valueOf(data.get(position).getRelease()));
+        movie_release.setText("Ngày khởi chiếu: " + String.valueOf(data.get(position).getRelease()));
 
         TextView movie_imdb = (TextView) v.findViewById(R.id.movie_imdb_point);
         movie_imdb.setText("IMDb: " + String.valueOf(data.get(position).getImdb()));
 
         TextView movie_duration = (TextView) v.findViewById(R.id.movie_duration);
-        movie_duration.setText("Duration: " + String.valueOf(data.get(position).getDuration()) + "mins");
+        movie_duration.setText("Thời lượng: " + String.valueOf(data.get(position).getDuration()) + " phút");
 
         ImageView img_movie_age = (ImageView) v.findViewById(R.id.img_movie_age);
         if (data.get(position).getAge() == 1) {

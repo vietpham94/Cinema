@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        android:text="Username"
+        android:text="Tên đăng nhập"
         android:textColor="@color/colorPrimaryDark" />
 
     <EditText
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        android:text="Password"
+        android:text="Mật khẩu"
         android:textColor="@color/colorPrimaryDark" />
 
     <EditText
@@ -44,20 +44,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
             android:contextClickable="true"
-            android:text="Forgot password?"
+            android:text="Quên mật khẩu?"
             android:textColor="@color/colorPrimaryDark" />
 
         <Button
             android:id="@+id/btn_auth_signin_signin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign in" />
+            android:text="Đăng nhập" />
 
         <Button
             android:id="@+id/btn_auth_signin_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign up" />
+            android:text="Đăng ký" />
 
     </LinearLayout>
 </LinearLayout>

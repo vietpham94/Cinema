@@ -49,8 +49,9 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ReceiptActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ReceiptActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

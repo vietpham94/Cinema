@@ -49,7 +49,7 @@ public class SignupFragment extends Fragment {
                     }
                     if (data == "true") {
                         HideDialog();
-                        Toast.makeText(getActivity(), "Sign Up Complete", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Đăng ký hoàn tất", Toast.LENGTH_SHORT).show();
 
                     fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.conent_frame, new SigninFragment())
@@ -59,7 +59,7 @@ public class SignupFragment extends Fragment {
 
 
                     } else {
-                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
                         HideDialog();
                     }
                 }
@@ -110,7 +110,7 @@ public class SignupFragment extends Fragment {
                 if (user.length() > 0 && pass.length() > 0 && email.length() > 0 && phone.length() > 0 && fullname.length() > 0 && passport.length() > 0 && address.length() > 0) {
                     if (CheckValidEmail(email)) {
                         try {
-                            progressDialog.setMessage("Sign up....");
+                            progressDialog.setMessage("Đăng ký....");
                             ShowDialog();
                             JSONObject jsonObject = new JSONObject();
                             jsonObject.put("user",user);
@@ -129,11 +129,11 @@ public class SignupFragment extends Fragment {
                         }
                     }else{
                         HideDialog();
-                        Toast.makeText(getActivity(), "Please Enter Valid Email. ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Vui nhập đúng cấu trúc Email. ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     HideDialog();
-                    Toast.makeText(getActivity(), "Please Enter Information.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

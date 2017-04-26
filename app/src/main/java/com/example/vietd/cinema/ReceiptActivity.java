@@ -173,7 +173,6 @@ public class ReceiptActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
                 mSocket.emit("Receipt", data_movie.getIdmovie(), nameseat, type, id_time, date, idcustomer, room, typeOfDay, typeOfMovie);
             }

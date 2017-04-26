@@ -1,8 +1,11 @@
 package com.example.vietd.cinema;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -98,7 +101,7 @@ public class MovieAllActivity extends AppCompatActivity {
             username = user.get(userSessionManager.KEY_USERNAME);
             tv_name_user.setText(username);
         } else {
-            tv_name_user.setText("Please login!");
+            tv_name_user.setText("Vui lòng đăng nhập!");
         }
         lv_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,16 +109,41 @@ public class MovieAllActivity extends AppCompatActivity {
                 TextView tv_item = (TextView) view.findViewById(R.id.tv_item_menu);
                 String item_menu = tv_item.getText().toString();
 
-                if (item_menu.equals("Home")) {
+                if (item_menu.equals("Trang chủ")) {
                     finish();
                 }
 
-                if (item_menu.equals("List movies")) {
+                if (item_menu.equals("Danh sách phim")) {
                     mDrawerLayout.closeDrawer(navigation_draw);
                 }
 
-                if (item_menu.equals("Login")) {
+                if (item_menu.equals("Đăng nhập")) {
+                    Intent intent = new Intent();
+                    setResult(1, intent);
+                    finish();
+                }
+                if (item_menu.equals("Đăng xuất")) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(MovieAllActivity.this);
 
+                    b.setTitle("Bạn thực sự muốn đăng xuất ?");
+
+                    b.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            userSessionManager.logoutUser();
+                            createDraw();
+                            tv_name_user.setText("Vui lòng đăng nhập!");
+                        }
+                    });
+
+                    b.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    b.create().show();
                 }
 
                 mDrawerLayout.closeDrawer(navigation_draw);
@@ -161,22 +189,22 @@ public class MovieAllActivity extends AppCompatActivity {
         lv_menu = (ListView) findViewById(R.id.lv_menu);
         arrayMenu = new ArrayList<item_menu_info>();
         if (username.equals("")) {
-            item_menu_info item = new item_menu_info(R.drawable.ic_exit_to_app_black_24dp, "Login");
-            item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Home");
-            item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "List movies");
-            item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "CGV info");
+            item_menu_info item = new item_menu_info(R.drawable.ic_exit_to_app_black_24dp, "Đăng nhập");
+            item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Trang chủ");
+            item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "Danh sách phim");
+            //item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "CGV info");
             arrayMenu.add(item);
             arrayMenu.add(item1);
             arrayMenu.add(item2);
-            arrayMenu.add(item3);
+            //arrayMenu.add(item3);
         } else {
-            item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Home");
-            item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "List movies");
-            item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "CGV info");
-            item_menu_info item4 = new item_menu_info(R.drawable.ic_power_settings_new_black_24dp, "Logout");
+            item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Trang chủ");
+            item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "Danh sách phim");
+            //item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "CGV info");
+            item_menu_info item4 = new item_menu_info(R.drawable.ic_power_settings_new_black_24dp, "Đăng xuất");
             arrayMenu.add(item1);
             arrayMenu.add(item2);
-            arrayMenu.add(item3);
+            //arrayMenu.add(item3);
             arrayMenu.add(item4);
         }
         menu_adpter = new item_menu_adpter(this, R.layout.item_menu_layout, arrayMenu);

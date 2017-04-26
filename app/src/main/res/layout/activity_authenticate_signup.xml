@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/activity_vertical_margin"
     android:orientation="vertical">
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="* Những trường bắt buộc nhập"
+        android:textColor="@color/CoupleSeat"/>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -13,7 +19,7 @@
             android:id="@+id/edt_auth_signup_username"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="User name"
+            android:hint="Tên đăng nhập *"
             android:textColorHint="@color/ChoosingSeat"
             android:textSize="15sp" />
     </android.support.design.widget.TextInputLayout>
@@ -26,7 +32,7 @@
             android:id="@+id/edt_auth_signup_password"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Password"
+            android:hint="Mật khẩu *"
             android:inputType="textPassword"
             android:textColorHint="@color/ChoosingSeat"
             android:textSize="15sp" />
@@ -40,7 +46,7 @@
             android:id="@+id/edt_auth_signup_email"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Email"
+            android:hint="Email *"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/ChoosingSeat"
             android:textSize="15sp" />
@@ -54,7 +60,7 @@
             android:id="@+id/edt_auth_signup_phone"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Phone number"
+            android:hint="Số điện thoại *"
             android:inputType="phone"
             android:textColorHint="@color/ChoosingSeat"
             android:textSize="15sp" />
@@ -69,7 +75,7 @@
             android:id="@+id/edt_auth_signup_fullname"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Full Name"
+            android:hint="Tên đầy đủ *"
             android:inputType="textPersonName"
             android:textColorHint="@color/ChoosingSeat"
             android:textSize="15sp" />
@@ -83,7 +89,7 @@
             android:id="@+id/edt_auth_signup_passport"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="ID/Passport"
+            android:hint="Hộ chiếu/Chứng minh nhân dân *"
             android:inputType="text"
             android:textSize="15sp" />
     </android.support.design.widget.TextInputLayout>
@@ -96,7 +102,7 @@
             android:id="@+id/edt_auth_signup_address"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Address"
+            android:hint="Địa chỉ *"
             android:inputType="text"
             android:textSize="15sp" />
     </android.support.design.widget.TextInputLayout>
@@ -116,13 +122,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:text="Sign up" />
+            android:text="Đăng ký" />
 
         <Button
             android:id="@+id/btn_auth_signup_signin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:text="Sign in" />
+            android:text="Đăng nhập" />
     </LinearLayout>
+
 </LinearLayout>
