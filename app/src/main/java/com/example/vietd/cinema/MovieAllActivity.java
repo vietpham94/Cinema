@@ -110,6 +110,8 @@ public class MovieAllActivity extends AppCompatActivity {
                 String item_menu = tv_item.getText().toString();
 
                 if (item_menu.equals("Trang chủ")) {
+                    Intent intent = new Intent();
+                    setResult(2, intent);
                     finish();
                 }
 
@@ -188,7 +190,7 @@ public class MovieAllActivity extends AppCompatActivity {
     public void createDraw() {
         lv_menu = (ListView) findViewById(R.id.lv_menu);
         arrayMenu = new ArrayList<item_menu_info>();
-        if (username.equals("")) {
+        if (!userSessionManager.checkLogin()) {
             item_menu_info item = new item_menu_info(R.drawable.ic_exit_to_app_black_24dp, "Đăng nhập");
             item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Trang chủ");
             item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "Danh sách phim");

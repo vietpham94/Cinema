@@ -58,7 +58,7 @@ public class SigninFragment extends Fragment {
                             Intent intent = new Intent(getActivity(), MainActivity.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Lỗi! Vui lòng nhập lại mật khẩu/tên đăng nhập!", Toast.LENGTH_SHORT).show();
                             HideDialog();
                         }
                     } catch (JSONException e) {
@@ -142,7 +142,7 @@ public class SigninFragment extends Fragment {
     }
 
     private void CheckSignin(final String user, final String pass) {
-        progressDialog.setMessage("Sign in.....");
+        progressDialog.setMessage("Đăng nhập...");
         ShowDialog();
         config.mSocket.emit("signin", user, pass);
     }

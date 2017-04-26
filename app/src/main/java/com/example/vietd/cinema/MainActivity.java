@@ -36,10 +36,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.conent_frame, new SigninFragment())
-                .addToBackStack(null)
-                .commit();
+        if(resultCode == 1){
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.conent_frame, new SigninFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }
+        if(resultCode == 2){
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.conent_frame, new TextTabhostFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }
+
     }
 
     @Override
@@ -87,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (item_menu.equals("Đăng nhập")) {
-                    fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.conent_frame, new SigninFragment())
                             .addToBackStack(null)
                             .commit();
@@ -103,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             userSessionManager.logoutUser();
                             createDraw();
-                            tv_name_user.setText("Plsease login!");
+                            tv_name_user.setText("Vui lòng đăng nhập!");
                         }
                     });
 
