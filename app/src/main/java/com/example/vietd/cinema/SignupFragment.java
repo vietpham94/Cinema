@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -29,8 +30,9 @@ public class SignupFragment extends Fragment {
 
     View myView;
     private EditText edt_username, edt_password, edt_email, edt_phone, edt_fullname, edt_passport, edt_address;
-    private Button btn_signin, btn_signup;
+    private Button btn_signup;
     private ProgressDialog progressDialog;
+    private TextView btn_signin;
     FragmentManager fragmentManager;
     Config config;
 
@@ -148,7 +150,7 @@ public class SignupFragment extends Fragment {
         edt_passport= (EditText) myView.findViewById(R.id.edt_auth_signup_passport);
         edt_address= (EditText) myView.findViewById(R.id.edt_auth_signup_address);
         btn_signup= (Button) myView.findViewById(R.id.btn_auth_signup);
-        btn_signin= (Button) myView.findViewById(R.id.btn_auth_signup_signin);
+        btn_signin= (TextView) myView.findViewById(R.id.btn_auth_signup_signin);
 
     }
     private void ShowDialog() {

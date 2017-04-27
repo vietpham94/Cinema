@@ -1,8 +1,6 @@
 package com.example.vietd.cinema;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,27 +22,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.PagerContainer;
 
+import static android.view.View.GONE;
 import static com.google.android.gms.internal.zzir.runOnUiThread;
 
 
 public class ComingMovieFragment extends Fragment {
     public String[] covers;
     View myView;
+    Config mConfig = new Config();
+    Socket mSocket = mConfig.mSocket;
+    String link = mConfig.link;
     private JSONArray jsonarray;
     private ArrayList<MovieInfo> arrayList;
     private PagerContainer pagerContainer;
     private ViewPager viewPager;
     private UserSessionManager userSessionManager;
-
-    Config mConfig = new Config();
-    Socket mSocket = mConfig.mSocket;
-    String link = mConfig.link;
-
+    private int Count = 0;
+    private String dateCompare;
     private Emitter.Listener getData = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -69,7 +72,7 @@ public class ComingMovieFragment extends Fragment {
                             arrayList.add(movies);
                         }
                         covers = new String[arrayList.size()];
-                        for(int i=0; i<arrayList.size(); i++){
+                        for (int i = 0; i < arrayList.size(); i++) {
                             covers[i] = String.valueOf(arrayList.get(i).getPosterurl());
                         }
                         pagerContainer = (PagerContainer) myView.findViewById(R.id.pager_container);
@@ -99,11 +102,10 @@ public class ComingMovieFragment extends Fragment {
         mSocket.emit("getComingMovie");
         mSocket.on("listComingMovie", getData);
 
-        myView=inflater.inflate(R.layout.fragment_coming_movie,container,false);
+        myView = inflater.inflate(R.layout.fragment_coming_movie, container, false);
 
         return myView;
     }
-
 
 
     private class MyPagerAdapter extends PagerAdapter {
@@ -116,6 +118,8 @@ public class ComingMovieFragment extends Fragment {
             TextView tv_movie_release_date = (TextView) view.findViewById(R.id.tv_movie_release_date);
             TextView tv_movie_duration = (TextView) view.findViewById(R.id.tv_movie_duration);
             Button btn_booking = (Button) view.findViewById(R.id.btn_booking);
+
+            //btn_booking.setVisibility(GONE);
 
             Picasso.with(getActivity().getBaseContext()).load(covers[position]).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -166,7 +170,7 @@ public class ComingMovieFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     userSessionManager = new UserSessionManager(getActivity().getApplicationContext());
-                    if(userSessionManager.checkLogin()) {
+                    if (userSessionManager.checkLogin()) {
                         Intent i = new Intent(getActivity(), ScheduleMovieActivity.class);
                         try {
                             i.putExtra("idmovie", jsonarray.getJSONObject(position).getString("id"));
@@ -183,11 +187,26 @@ public class ComingMovieFragment extends Fragment {
                             i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
                             i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
                             i.putExtra("poster", link + jsonarray.getJSONObject(position).getString("image"));
+                            dateCompare = jsonarray.getJSONObject(position).getString("startday");
+                            Calendar calendar = Calendar.getInstance();
+                            SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
+                            String strDate = mdformat.format(calendar.getTime());
+                            Date dateNow = mdformat.parse(strDate);
+                            Date dateCom = mdformat.parse(dateCompare);
+                            if (dateCom.after(dateNow)) {
+                                Count = 1;
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                        startActivity(i);
-                    }else {
+                        if (Count == 1) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Hiện tại chưa có lịch chiếu cho phim này!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(i);
+                        }
+                    } else {
                         Toast.makeText(getActivity().getApplicationContext(), "Vui lòng đăng nhập trước khi đặt vé!", Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -22,7 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.PagerContainer;
@@ -35,6 +39,8 @@ public class FeatureMovieFragment extends Fragment {
     Config mConfig = new Config();
     Socket mSocket = mConfig.mSocket;
     String link = mConfig.link;
+    private int Count = 0;
+    private String dateCompare;
     private JSONArray jsonarray;
     private ArrayList<MovieInfo> arrayList;
     private PagerContainer pagerContainer;
@@ -150,6 +156,7 @@ public class FeatureMovieFragment extends Fragment {
                         i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
                         i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
                         i.putExtra("poster", link + jsonarray.getJSONObject(position).getString("image"));
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -162,7 +169,7 @@ public class FeatureMovieFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     userSessionManager = new UserSessionManager(getActivity().getApplicationContext());
-                    if(userSessionManager.checkLogin()) {
+                    if (userSessionManager.checkLogin()) {
                         Intent i = new Intent(getActivity(), ScheduleMovieActivity.class);
                         try {
                             i.putExtra("idmovie", jsonarray.getJSONObject(position).getString("id"));
@@ -179,11 +186,26 @@ public class FeatureMovieFragment extends Fragment {
                             i.putExtra("urltrailer", jsonarray.getJSONObject(position).getString("urltrailer"));
                             i.putExtra("content", jsonarray.getJSONObject(position).getString("content"));
                             i.putExtra("poster", link + jsonarray.getJSONObject(position).getString("image"));
+                            dateCompare = jsonarray.getJSONObject(position).getString("startday");
+                            Calendar calendar = Calendar.getInstance();
+                            SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
+                            String strDate = mdformat.format(calendar.getTime());
+                            Date dateNow = mdformat.parse(strDate);
+                            Date dateCom = mdformat.parse(dateCompare);
+                            if (dateCom.after(dateNow)) {
+                                Count = 1;
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                        startActivity(i);
-                    }else {
+                        if(Count == 1) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Hiện tại chưa có lịch chiếu cho phim này!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            startActivity(i);
+                        }
+                    } else {
                         Toast.makeText(getActivity().getApplicationContext(), "Vui lòng đăng nhập trước khi đặt vé!", Toast.LENGTH_SHORT).show();
                     }
                 }

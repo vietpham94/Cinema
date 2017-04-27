@@ -2,7 +2,6 @@ package com.example.vietd.cinema;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -18,6 +17,11 @@ import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 //import static android.provider.MediaStore.Video.Thumbnails.VIDEO_ID;
 //YouTubeBaseActivity
 
@@ -31,6 +35,8 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
     private YouTubePlayerView trailer;
     private UserSessionManager userSessionManager;
     private Button btn_Booking;
+    private int Count = 0;
+    private String dateCompare;
 
 
     @Override
@@ -58,7 +64,7 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
 
         name.setText(i.getStringExtra("name"));
 
-            duration.setText(Html.fromHtml(res.getString(R.string.duration)) + i.getStringExtra("duration") + " phút");
+        duration.setText(Html.fromHtml(res.getString(R.string.duration)) + i.getStringExtra("duration") + " phút");
         director.setText(Html.fromHtml(res.getString(R.string.director)) + i.getStringExtra("director"));
         actor.setText(Html.fromHtml(res.getString(R.string.actor)) + i.getStringExtra("actornactress"));
         country.setText(Html.fromHtml(res.getString(R.string.nation)) + i.getStringExtra("nation"));
@@ -85,7 +91,7 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
             @Override
             public void onClick(View v) {
                 userSessionManager = new UserSessionManager(getApplicationContext());
-                if(userSessionManager.checkLogin()) {
+                if (userSessionManager.checkLogin()) {
                     Intent intent = new Intent(MovieDetail.this, ScheduleMovieActivity.class);
                     intent.putExtra("idmovie", i.getStringExtra("idmovie"));
                     intent.putExtra("name", i.getStringExtra("name"));
@@ -101,9 +107,33 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
                     intent.putExtra("urltrailer", i.getStringExtra("urltrailer"));
                     intent.putExtra("content", i.getStringExtra("content"));
                     intent.putExtra("poster", i.getStringExtra("poster"));
-                    startActivity(intent);
-                }else {
-                    Toast.makeText(MovieDetail.this, "Vui lòng đăng nhập trước khi đặt vé!", Toast.LENGTH_SHORT).show();
+                    dateCompare = i.getStringExtra("startday");
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
+                    String strDate = mdformat.format(calendar.getTime());
+                    Date dateNow = null;
+                    try {
+                        dateNow = mdformat.parse(strDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date dateCom = null;
+                    try {
+                        dateCom = mdformat.parse(dateCompare);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (dateCom.after(dateNow)) {
+                        Count = 1;
+                    }
+                    if(Count == 1) {
+                        Toast.makeText(getApplicationContext(), "Hiện tại chưa có lịch chiếu cho phim này!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        startActivity(i);
+                    }
+                } else {
+                    Toast.makeText(MovieDetail.this, "Vui lòng đăng nhập trước khi đặt phim", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         });
@@ -112,7 +142,7 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
 
     @Override
     public void onInitializationFailure(Provider provider, YouTubeInitializationResult result) {
-        Toast.makeText(this, "Failed to initialize.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Lỗi tải Video", Toast.LENGTH_LONG).show();
     }
 
     @Override

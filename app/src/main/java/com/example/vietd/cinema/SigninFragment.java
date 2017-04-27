@@ -31,7 +31,8 @@ public class SigninFragment extends Fragment {
     View myView;
     Config config;
     EditText user, pass;
-    Button btn_signin, btn_register;
+    TextView btn_register;
+    Button btn_signin;
     ProgressDialog progressDialog;
     FragmentManager fragmentManager;
     TextView tv_forgot_password;
@@ -138,7 +139,7 @@ public class SigninFragment extends Fragment {
         pass = (EditText) myView.findViewById(R.id.edt_auth_signin_password);
         tv_forgot_password = (TextView) myView.findViewById(R.id.tv_auth_signin_forgot);
         btn_signin = (Button) myView.findViewById(R.id.btn_auth_signin_signin);
-        btn_register = (Button) myView.findViewById(R.id.btn_auth_signin_signup);
+        btn_register = (TextView) myView.findViewById(R.id.btn_auth_signin_signup);
     }
 
     private void CheckSignin(final String user, final String pass) {
