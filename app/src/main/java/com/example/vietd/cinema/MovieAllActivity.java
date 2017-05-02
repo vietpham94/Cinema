@@ -118,7 +118,7 @@ public class MovieAllActivity extends AppCompatActivity {
                     mDrawerLayout.closeDrawer(navigation_draw);
                 }
 
-                if (item_menu.equals("Đăng nhập")) {
+                if (item_menu.equals("Đăng nhập/Đăng ký")) {
                     Intent intent = new Intent();
                     setResult(1, intent);
                     finish();
@@ -190,7 +190,7 @@ public class MovieAllActivity extends AppCompatActivity {
         lv_menu = (ListView) findViewById(R.id.lv_menu);
         arrayMenu = new ArrayList<item_menu_info>();
         if (!userSessionManager.checkLogin()) {
-            item_menu_info item = new item_menu_info(R.drawable.ic_exit_to_app_black_24dp, "Đăng nhập");
+            item_menu_info item = new item_menu_info(R.drawable.ic_exit_to_app_black_24dp, "Đăng nhập/Đăng ký");
             item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Trang chủ");
             item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "Danh sách phim");
             //item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "CGV info");
