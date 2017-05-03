@@ -126,10 +126,11 @@ public class MovieDetail extends YouTubeBaseActivity implements YouTubePlayer.On
                     if (dateCom.after(dateNow)) {
                         Count = 1;
                     }
-                    if(Count == 1) {
+                    if (Count == 1) {
                         Toast.makeText(getApplicationContext(), "Hiện tại chưa có lịch chiếu cho phim này!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        startActivity(i);
+                    } else {
+                        //Toast.makeText(getApplicationContext(), "Kien!", Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
                     }
                 } else {
                     Toast.makeText(MovieDetail.this, "Vui lòng đăng nhập trước khi đặt phim", Toast.LENGTH_LONG).show();
