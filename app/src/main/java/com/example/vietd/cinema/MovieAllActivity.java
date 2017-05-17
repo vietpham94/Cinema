@@ -1,6 +1,7 @@
 package com.example.vietd.cinema;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -123,6 +124,12 @@ public class MovieAllActivity extends AppCompatActivity {
                     setResult(1, intent);
                     finish();
                 }
+                if (item_menu.equals("Thông tin")) {
+                    Dialog d = new Dialog(MovieAllActivity.this);
+                    d.setContentView(R.layout.about);
+                    d.setTitle("THÔNG TIN");
+                    d.show();
+                }
                 if (item_menu.equals("Đăng xuất")) {
                     AlertDialog.Builder b = new AlertDialog.Builder(MovieAllActivity.this);
 
@@ -193,19 +200,19 @@ public class MovieAllActivity extends AppCompatActivity {
             item_menu_info item = new item_menu_info(R.drawable.ic_exit_to_app_black_24dp, "Đăng nhập/Đăng ký");
             item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Trang chủ");
             item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "Danh sách phim");
-            //item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "CGV info");
+            item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "Thông tin");
             arrayMenu.add(item);
             arrayMenu.add(item1);
             arrayMenu.add(item2);
-            //arrayMenu.add(item3);
+            arrayMenu.add(item3);
         } else {
             item_menu_info item1 = new item_menu_info(R.drawable.ic_home_black_24dp, "Trang chủ");
             item_menu_info item2 = new item_menu_info(R.drawable.ic_view_list_black_24dp, "Danh sách phim");
-            //item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "CGV info");
+            item_menu_info item3 = new item_menu_info(R.drawable.ic_info_outline_black_24dp, "Thông tin");
             item_menu_info item4 = new item_menu_info(R.drawable.ic_power_settings_new_black_24dp, "Đăng xuất");
             arrayMenu.add(item1);
             arrayMenu.add(item2);
-            //arrayMenu.add(item3);
+            arrayMenu.add(item3);
             arrayMenu.add(item4);
         }
         menu_adpter = new item_menu_adpter(this, R.layout.item_menu_layout, arrayMenu);
